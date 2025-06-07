@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return false">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Course Notes</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    .container {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .semester-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      text-align: center;
+    }
+    .semester-card:hover {
+      transform: scale(1.03);
+    }
+    .watermark {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 10px;
+      opacity: 0.2;
+      color: red;
+      z-index: 999;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body oncopy="return false">
+  <div class="watermark">User: guest@example.com | Accessed: 2025-06-07</div>
+  <header>
+    📚 Welcome to Secure Notes Portal
+  </header>
+
+  <div class="container">
+    <h2>Select Your Semester</h2>
+    
+    <a href="semester/sem1.html">
+      <div class="semester-card">
+        🧩 1st Semester
+      </div>
+    </a>
+    
+    <a href="semester/sem2.html">
+      <div class="semester-card">
+        ⚙️ 2nd Semester
+      </div>
+    </a>
+
+    <!-- Add more semesters as needed -->
+  </div>
+</body>
+</html>
+
+
+

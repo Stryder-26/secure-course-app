@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return false">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1st Semester Subjects</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    header {
+      background: #34495e;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 22px;
+    }
+    .container {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .subject-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin: 15px 0;
+      text-align: center;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    .subject-card:hover {
+      transform: scale(1.03);
+    }
+    .watermark {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 10px;
+      opacity: 0.2;
+      color: red;
+      z-index: 999;
+      pointer-events: none;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+</head>
+<body oncopy="return false">
+  <div class="watermark">User: guest@example.com | Accessed: 2025-06-07</div>
+
+  <header>
+    📘 1st Semester Subjects
+  </header>
+
+  <div class="container">
+    <h2>Select a Subject</h2>
+
+    <a href="../subjects/sem1/physics.html">
+      <div class="subject-card">🧪 Physics</div>
+    </a>
+
+    <a href="../subjects/sem1/math.html">
+      <div class="subject-card">📐 Math</div>
+    </a>
+
+    <a href="../subjects/sem1/english.html">
+      <div class="subject-card">📖 English</div>
+    </a>
+
+    <a href="../subjects/sem1/chemistry.html">
+      <div class="subject-card">⚗️ Chemistry</div>
+    </a>
+
+    <!-- Add more subjects here -->
+  </div>
+</body>
+</html>
