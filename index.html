@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" oncontextmenu="return false">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Secure Course Notes</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
     .semester-card {
       background: white;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 20px;
       margin-bottom: 20px;
       cursor: pointer;
@@ -49,33 +49,143 @@
       z-index: 999;
       pointer-events: none;
     }
+    #login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #login-box {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    #login-btn {
+      background-color: #4285f4;
+      color: white;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* Admin-only section styling */
+    #admin-section {
+      background: #fffae6;
+      border: 2px solid #f1c40f;
+      padding: 15px;
+      margin-top: 30px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      color: #b7950b;
+      display: none; /* Hide by default */
+    }
   </style>
 </head>
 <body oncopy="return false">
+
+  <!-- Watermark -->
   <div class="watermark">User: guest@example.com | Accessed: 2025-06-07</div>
+
+  <!-- Login overlay -->
+  <div id="login-overlay">
+    <div id="login-box">
+      <h2>🔒 Secure Access</h2>
+      <p>Please sign in with your Google account to continue</p>
+      <button id="login-btn">Login with Google</button>
+    </div>
+  </div>
+
+  <!-- Main Page Content -->
   <header>
     📚 Welcome to Secure Notes Portal
   </header>
 
   <div class="container">
     <h2>Select Your Semester</h2>
-    
     <a href="semester/sem1.html">
-      <div class="semester-card">
-        🧩 1st Semester
-      </div>
+      <div class="semester-card">🧩 1st Semester</div>
     </a>
-    
     <a href="semester/sem2.html">
-      <div class="semester-card">
-        ⚙️ 2nd Semester
-      </div>
+      <div class="semester-card">⚙️ 2nd Semester</div>
     </a>
 
-    <!-- Add more semesters as needed -->
+    <!-- Admin-only section -->
+    <div id="admin-section">
+      🔐 Admin Panel: You have admin access!
+    </div>
   </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+  apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+  authDomain: "course-app-a1d28.firebaseapp.com",
+  projectId: "course-app-a1d28",
+  storageBucket: "course-app-a1d28.appspot.com",  // <-- fix this line
+  messagingSenderId: "626435621011",
+  appId: "1:626435621011:web:86fe095d0d36de609a4d66",
+  measurementId: "G-8C9MPXVSZH"
+};
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginBtn = document.getElementById("login-btn");
+    const loginOverlay = document.getElementById("login-overlay");
+    const watermark = document.querySelector(".watermark");
+    const adminSection = document.getElementById("admin-section");
+
+    // Define admin emails here
+    const adminEmails = [
+      "admin@example.com",
+      "youradminemail@domain.com"
+      // Add your admin emails here
+    ];
+
+    loginBtn.addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch((error) => {
+        alert("Login failed: " + error.message);
+      });
+    });
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        loginOverlay.style.display = "none";
+        watermark.innerText = `User: ${user.email} | Accessed: ${new Date()
+          .toISOString()
+          .split("T")[0]}`;
+
+        // Check if user is admin
+        if (adminEmails.includes(user.email.toLowerCase())) {
+          adminSection.style.display = "block"; // Show admin section
+        } else {
+          adminSection.style.display = "none"; // Hide admin section
+        }
+      } else {
+        // Show login if not logged in
+        loginOverlay.style.display = "flex";
+        watermark.innerText = "User: guest@example.com | Accessed: " + new Date().toISOString().split("T")[0];
+        adminSection.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
