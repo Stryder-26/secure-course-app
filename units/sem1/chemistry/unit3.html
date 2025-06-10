@@ -30,6 +30,7 @@
       width: 100%;
       height: 100%;
       border: none;
+      pointer-events: none; /* Disable interaction (e.g. print, download) */
     }
     img, iframe {
       -webkit-user-drag: none;
@@ -55,10 +56,11 @@
       const blockedKeys = ['p', 'c', 'u', 's', 'a', 'x'];
       if ((e.ctrlKey && blockedKeys.includes(e.key.toLowerCase())) || e.key === 'F12') {
         e.preventDefault();
-        alert("Action disabled for security.");
+        alert("This action is disabled for security.");
       }
     });
   </script>
 
 </body>
 </html>
+
