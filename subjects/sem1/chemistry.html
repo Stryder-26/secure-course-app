@@ -6,37 +6,87 @@
   <title>Chemistry - 1st Semester</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Poppins", sans-serif;
       padding: 20px;
+      background-color: #f3f4f6;
+      text-align: center;
     }
+
     h1 {
       margin-bottom: 1em;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
     }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
+
+    p {
+      font-size: 18px;
+      color: #555;
     }
-    li {
-      margin: 0.8em 0;
+
+    .unit-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
     }
+
+    .unit-card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: 0.3s ease-in-out;
+      min-width: 180px;
+      text-align: center;
+    }
+
+    .unit-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
     a {
       text-decoration: none;
       color: #007BFF;
       font-size: 1.2em;
+      font-weight: 500;
+      display: block;
     }
+
     a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .unit-container {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Chemistry - 1st Semester</h1>
   <p>Select a Unit to view notes:</p>
-  <ul>
-    <li><a href="../../units/sem1/chemistry/unit1.html">Unit 1</a></li>
-    <li><a href="../../units/sem1/chemistry/unit2.html">Unit 2</a></li>
-     <li><a href="../../units/sem1/chemistry/unit3.html">Unit 3</a></li>
-  </ul>
+
+  <div class="unit-container">
+    <div class="unit-card">
+      <a href="../../units/sem1/chemistry/unit1.html">Unit 1</a>
+    </div>
+    <div class="unit-card">
+      <a href="../../units/sem1/chemistry/unit2.html">Unit 2</a>
+    </div>
+    <div class="unit-card">
+      <a href="../../units/sem1/chemistry/unit3.html">Unit 3</a>
+    </div>
+    <div class="unit-card">
+      <a href="../../units/sem1/chemistry/unit4.html">Unit 4</a>
+    </div>
+    <div class="unit-card">
+      <a href="../../units/sem1/chemistry/unit5.html">Unit 5</a>
+    </div>
+  </div>
 </body>
 </html>
-

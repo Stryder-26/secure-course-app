@@ -9,14 +9,7 @@
       font-family: Arial, sans-serif;
       padding: 20px;
       background-color: #f3f4f6;
-
-      /* Disable text selection */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
       user-select: none;
-
-      /* Disable touch callout on mobile */
       -webkit-touch-callout: none;
     }
 
@@ -25,20 +18,57 @@
       margin-bottom: 30px;
     }
 
-    img.note-image {
+    .note-image {
       display: block;
       max-width: 100%;
       margin: 20px auto;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-
-      /* Disable drag and drop on images */
       -webkit-user-drag: none;
       user-drag: none;
-      pointer-events: none; /* disables interaction including drag */
+      pointer-events: none;
     }
 
-    /* Block printing */
+    .locked img {
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .locked {
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 20px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .pay-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: 0.3s ease-in-out;
+    }
+
+    .pay-btn:hover {
+      background-color: #27ae60;
+      transform: scale(1.05);
+    }
+
     @media print {
       body {
         display: none !important;
@@ -46,17 +76,23 @@
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false">
   <h1>Chemistry – Unit 1 Notes</h1>
 
   <img src="../../../assets/notes/sem1/chemistry/unit1/page_1.jpg" alt="Page 1" class="note-image" />
   <img src="../../../assets/notes/sem1/chemistry/unit1/page_2.jpg" alt="Page 2" class="note-image" />
   <img src="../../../assets/notes/sem1/chemistry/unit1/page_3.jpg" alt="Page 3" class="note-image" />
-  <img src="../../../assets/notes/sem1/chemistry/unit1/page_4.jpg" alt="Page 4" class="note-image" />
-  <img src="../../../assets/notes/sem1/chemistry/unit1/page_5.jpg" alt="Page 5" class="note-image" />
-  <img src="../../../assets/notes/sem1/chemistry/unit1/page_6.jpg" alt="Page 6" class="note-image" />
-  <img src="../../../assets/notes/sem1/chemistry/unit1/page_7.jpg" alt="Page 7" class="note-image" />
-  <img src="../../../assets/notes/sem1/chemistry/unit1/page_8.jpg" alt="Page 8" class="note-image" />
+
+  <div class="locked">
+    <img src="../../../assets/notes/sem1/chemistry/unit1/page_4.jpg" alt="Page 4" class="note-image" />
+    <div class="overlay">
+      🔒 Locked – Unlock all pages for ₹19
+      <br />
+      <a href="upi://pay?pa=7879054713@axl&pn=Divy+Patel&am=19&cu=INR&tn=Unlock+Chemistry+Notes" class="pay-btn">
+        Pay via UPI
+      </a>
+    </div>
+  </div>
 
   <script>
     // Disable right-click context menu on images

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chemistry – Unit 4</title>
+  <link rel="stylesheet" href="../../../css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f3f4f6;
+      user-select: none;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .note-image {
+      display: block;
+      max-width: 100%;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      pointer-events: none;
+    }
+
+    /* Disable drag, selection, print */
+    body, img {
+      -webkit-user-drag: none;
+      -webkit-touch-callout: none;
+      -webkit-print-color-adjust: exact !important;
+    }
+
+    @media print {
+      body {
+        display: none;
+      }
+    }
+  </style>
+  <script>
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Block Ctrl+U / Ctrl+S / Ctrl+P
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && ['u', 's', 'p'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>Chemistry – Unit 4 Notes</h1>
+
+  <!-- Display 16 pages -->
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_9.jpg" alt="Page 9" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_10.jpg" alt="Page 10" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_11.jpg" alt="Page 11" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_12.jpg" alt="Page 12" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_13.jpg" alt="Page 13" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_14.jpg" alt="Page 14" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_15.jpg" alt="Page 15" class="note-image" />
+  <img src="../../../assets/notes/sem1/chemistry/unit4/page_16.jpg" alt="Page 16" class="note-image" />
+
+</body>
+</html>
