@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Secure Course Notes</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Crack Notes</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,6 +11,7 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-user-select: none;
     }
     header {
       background: #2c3e50;
@@ -19,19 +19,39 @@
       padding: 20px;
       text-align: center;
       font-size: 24px;
-      letter-spacing: 1px;
     }
     .container {
       padding: 30px;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
     }
+    .watermark {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      opacity: 0.3;
+      font-size: 12px;
+      color: red;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    @media print {
+      body {
+        display: none;
+      }
+    }
+
+    .semester-block {
+      flex: 1;
+      margin: 10px;
+    }
+
     .semester-card {
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       cursor: pointer;
       transition: transform 0.2s ease;
       text-align: center;
@@ -39,16 +59,63 @@
     .semester-card:hover {
       transform: scale(1.03);
     }
-    .watermark {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      font-size: 10px;
-      opacity: 0.2;
-      color: red;
-      z-index: 999;
-      pointer-events: none;
+
+    .subject-list-box {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
     }
+
+    .subject-list {
+      list-style: none;
+      padding-left: 20px;
+      margin: 0;
+      background: #fdfdfd;
+      border-radius: 8px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+    }
+    .subject-list.open {
+      max-height: 500px;
+    }
+    .subject-list li {
+      padding: 10px 15px;
+      margin: 6px 0;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #dfe9f3;
+      transition: all 0.25s ease;
+    }
+    .subject-list li:hover {
+      background: #cde9ff;
+      color: #000;
+      transform: translateX(5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+    .subject-list li a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 30px 0 10px;
+      text-align: center;
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
     #login-overlay {
       position: fixed;
       top: 0;
@@ -62,6 +129,7 @@
       align-items: center;
       z-index: 1000;
     }
+
     #login-box {
       background: white;
       padding: 30px 40px;
@@ -69,6 +137,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
+
     #login-btn {
       background-color: #4285f4;
       color: white;
@@ -78,85 +147,134 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    /* Admin-only section styling */
-    #admin-section {
-      background: #fffae6;
-      border: 2px solid #f1c40f;
-      padding: 15px;
-      margin-top: 30px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
-      color: #b7950b;
-      display: none; /* Hide by default */
+
+    #admin-tools {
+      display: none;
+      margin-top: 40px;
+      padding: 20px;
+      background: #fff8e1;
+      border: 2px solid #fbc02d;
+      border-radius: 10px;
+    }
+
+    #pending-users-list li {
+      margin: 5px 0;
+    }
+
+    input[type="email"] {
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-left: 10px;
     }
   </style>
 </head>
 <body oncopy="return false">
+  <div class="watermark">User: guest@example.com | Accessed: 2025-06-17</div>
 
-  <!-- Watermark -->
-  <div class="watermark">User: guest@example.com | Accessed: 2025-06-07</div>
-
-  <!-- Login overlay -->
   <div id="login-overlay">
     <div id="login-box">
-      <h2>🔒 Secure Access</h2>
+      <h2>🔒 Crack Notes Access</h2>
       <p>Please sign in with your Google account to continue</p>
       <button id="login-btn">Login with Google</button>
     </div>
   </div>
 
-  <!-- Main Page Content -->
-  <header>
-    📚 Welcome to Secure Notes Portal
-  </header>
+  <header>📚 Welcome to Crack Notes</header>
+  <div class="container" id="main-content" style="display: none;">
 
-  <div class="container">
-    <h2>Select Your Semester</h2>
-    <a href="semester/sem1.html">
-      <div class="semester-card">🧩 1st Semester</div>
-    </a>
-    <a href="semester/sem2.html">
-      <div class="semester-card">⚙️ 2nd Semester</div>
-    </a>
+    <!-- 📝 Notes Section -->
+    <h2 class="section-title">📝 Notes</h2>
+    <div class="section">
+      <div class="semester-block">
+        <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
+        <div class="subject-list-box">
+          <ul id="notes-sem1" class="subject-list">
+            <li>BT101 Engineering Chemistry</li>
+            <li>BT102 MATHEMATICS-I</li>
+            <li>BT103 English for Communication</li>
+            <li>BT104 Basic Electrical & Electronics Engineering</li>
+            <li>BT105 Engineering Graphics</li>
+          </ul>
+        </div>
+      </div>
+      <div class="semester-block">
+        <div class="semester-card" onclick="toggleSubjects('notes-sem2')">⚙️ 2nd Semester</div>
+        <div class="subject-list-box">
+          <ul id="notes-sem2" class="subject-list">
+            <li>BT201 Engineering Physics</li>
+            <li>BT202 MATHEMATICS-II</li>
+            <li>BT203 Basic Mechanical Engineering</li>
+            <li>BT204 Basic Civil Engineering & Mechanics</li>
+            <li>BT205 Basic Computer Engineering</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-    <!-- Admin-only section -->
-    <div id="admin-section">
-      🔐 Admin Panel: You have admin access!
+    <!-- ⚡ Crash Course Section -->
+    <h2 class="section-title">⚡ Crash Course</h2>
+    <div class="section">
+      <div class="semester-block">
+        <div class="semester-card" onclick="toggleSubjects('crash-sem1')">🧩 1st Semester</div>
+        <div class="subject-list-box">
+          <ul id="crash-sem1" class="subject-list">
+            <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
+            <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="semester-block">
+        <div class="semester-card" onclick="toggleSubjects('crash-sem2')">⚙️ 2nd Semester</div>
+        <div class="subject-list-box">
+          <ul id="crash-sem2" class="subject-list">
+            <li><a href="crashcourse/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
+            <li><a href="crashcourse/sem2/m2.html" target="_blank">BT202 MATHEMATICS-II</a></li>
+            <li><a href="crashcourse/sem2/bme.html" target="_blank">BT203 Basic Mechanical Engineering</a></li>
+            <li><a href="crashcourse/sem2/bcme.html" target="_blank">BT204 Basic Civil Engineering & Mechanics</a></li>
+            <li><a href="crashcourse/sem2/bce.html" target="_blank">BT205 Basic Computer Engineering</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Tools -->
+    <div id="admin-tools">
+      <h3>🛠️ Admin Tools</h3>
+      <h4>Pending Login Requests</h4>
+      <ul id="pending-users-list"></ul>
+      <h4>Manually Approve Email</h4>
+      <input type="email" id="manual-email" placeholder="Enter email to approve" />
+      <button onclick="manuallyApprove()">✅ Approve</button>
     </div>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
       authDomain: "course-app-a1d28.firebaseapp.com",
       projectId: "course-app-a1d28",
-      storageBucket: "course-app-a1d28.appspot.com",  // <-- fix this line
+      storageBucket: "course-app-a1d28.appspot.com",
       messagingSenderId: "626435621011",
       appId: "1:626435621011:web:86fe095d0d36de609a4d66",
       measurementId: "G-8C9MPXVSZH"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const db = firebase.firestore();
 
     const loginBtn = document.getElementById("login-btn");
     const loginOverlay = document.getElementById("login-overlay");
     const watermark = document.querySelector(".watermark");
-    const adminSection = document.getElementById("admin-section");
-
-    // Define admin emails here
-    const adminEmails = [
-      "admin@example.com",
-      "youradminemail@domain.com",
-      "vbhrshrvstv@gmail.com"  // Your admin email added here
-    ];
+    const mainContent = document.getElementById("main-content");
+    const adminTools = document.getElementById("admin-tools");
 
     loginBtn.addEventListener("click", () => {
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -167,24 +285,80 @@
 
     auth.onAuthStateChanged((user) => {
       if (user) {
-        loginOverlay.style.display = "none";
-        watermark.innerText = `User: ${user.email} | Accessed: ${new Date()
-          .toISOString()
-          .split("T")[0]}`;
-
-        // Check if user is admin
-        if (adminEmails.includes(user.email.toLowerCase())) {
-          adminSection.style.display = "block"; // Show admin section
-        } else {
-          adminSection.style.display = "none"; // Hide admin section
-        }
-      } else {
-        // Show login if not logged in
-        loginOverlay.style.display = "flex";
-        watermark.innerText = "User: guest@example.com | Accessed: " + new Date().toISOString().split("T")[0];
-        adminSection.style.display = "none";
+        const email = user.email.toLowerCase();
+        watermark.innerText = `User: ${email} | Accessed: ${new Date().toISOString().split("T")[0]}`;
+        db.collection("approvedUsers").doc(email).get().then(doc => {
+          if (doc.exists) {
+            const role = doc.data().role;
+            loginOverlay.style.display = "none";
+            mainContent.style.display = "block";
+            if (role === "admin") {
+              adminTools.style.display = "block";
+              loadPendingUsers();
+            }
+          } else {
+            db.collection("loginAttempts").doc(email).set({
+              email: email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            alert("🚫 Access Denied: You are not an approved user.");
+            auth.signOut();
+          }
+        });
       }
     });
+
+    function manuallyApprove() {
+      const email = document.getElementById("manual-email").value.trim().toLowerCase();
+      if (email) {
+        db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
+          alert("✅ Approved: " + email);
+          document.getElementById("manual-email").value = "";
+          loadPendingUsers();
+        });
+      }
+    }
+
+    function approveEmail(email) {
+      db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
+        db.collection("loginAttempts").doc(email).delete();
+        alert("✅ Approved: " + email);
+        loadPendingUsers();
+      });
+    }
+
+    function loadPendingUsers() {
+      const list = document.getElementById("pending-users-list");
+      list.innerHTML = "";
+      db.collection("loginAttempts").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const email = doc.id;
+          db.collection("approvedUsers").doc(email).get().then(userDoc => {
+            if (!userDoc.exists) {
+              const li = document.createElement("li");
+              li.innerHTML = `${email} <button onclick="approveEmail('${email}')">Approve</button>`;
+              list.appendChild(li);
+            }
+          });
+        });
+      });
+    }
+
+    function toggleSubjects(id) {
+      const all = document.querySelectorAll("ul.subject-list");
+      const current = document.getElementById(id);
+      const alreadyOpen = current.classList.contains("open");
+
+      all.forEach(ul => {
+        if (ul.id.startsWith(id.split("-")[0])) {
+          ul.classList.remove("open");
+        }
+      });
+
+      if (!alreadyOpen) {
+        current.classList.add("open");
+      }
+    }
   </script>
 </body>
 </html>
