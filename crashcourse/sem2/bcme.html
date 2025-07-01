@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BCME – Crash Course Notes</title>
-  <link rel="stylesheet" href="../../../css/style.css" />
+  <title>BCE – Crash Course Notes</title>
+  <link rel="stylesheet" href="/secure-course-app/css/style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -31,7 +31,6 @@
 
     .note-image.unlocked {
       filter: none !important;
-      pointer-events: auto;
     }
 
     .sidebar {
@@ -87,54 +86,49 @@
     }
   </style>
 </head>
-<body oncontextmenu="return false" oncopy="return false">
+<body oncontextmenu="return false">
 
-  <!-- 🔥 Toggle Button -->
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
 
-  <!-- 🔎 Sidebar -->
   <div class="sidebar" id="sidebar">
-    <h2>Cheat Sheet – BCME</h2>
-    <strong>Unit I: Materials</strong>
+    <h2>Cheat Sheet – BCE</h2>
+    <strong>Unit I: Building Materials & Construction</strong>
     <ul>
-      <li>Properties of good building stones</li>
-      <li>Types of cement and uses</li>
-      <li>Workability of concrete – Factors</li>
+      <li>Workability of concrete – factors</li>
+      <li>Plastering & pointing</li>
+      <li>Types of staircases</li>
     </ul>
-    <strong>Unit II: Surveying</strong>
+    <strong>Unit II: Surveying & Positioning</strong>
     <ul>
-      <li>Types of surveying methods</li>
-      <li>Chain & compass survey</li>
-      <li>Use of leveling instruments</li>
+      <li>Reciprocal levelling</li>
+      <li>Theodolite components</li>
+      <li>Auto level</li>
     </ul>
-    <strong>Unit III: Centroid & Moment</strong>
+    <strong>Unit III: Mapping & Sensing</strong>
     <ul>
-      <li>Centre of gravity & centroid</li>
-      <li>Moment of inertia basics</li>
-      <li>Parallel & perpendicular axis theorems</li>
+      <li>Remote sensing</li>
+      <li>Simpson’s & Trapezoidal rule</li>
+      <li>Contour lines</li>
     </ul>
-    <strong>Unit IV: Beams</strong>
+    <strong>Unit IV: Forces & Equilibrium</strong>
     <ul>
-      <li>Types of beams & supports</li>
-      <li>Simply supported & cantilever beams</li>
-      <li>Bending moment & shear force diagrams</li>
-    </ul>
-    <strong>Unit V: Trusses</strong>
-    <ul>
-      <li>Trusses – Method of joints</li>
+      <li>Bow’s notation & FBD</li>
+      <li>Truss using joints</li>
       <li>Lami’s theorem</li>
-      <li>Free body diagrams</li>
+    </ul>
+    <strong>Unit V: Centre of Gravity & MOI</strong>
+    <ul>
+      <li>Moment of inertia of rectangle</li>
+      <li>SFD & BMD for beams</li>
+      <li>Radius of gyration</li>
     </ul>
   </div>
 
-  <!-- 📝 Page Title -->
-  <h1>Basic Civil Engineering & Mechanics – Crash Course</h1>
+  <h1>Basic Computer Engineering – Crash Course</h1>
 
-  <!-- 📄 Notes Images -->
-  <img src="/secure-course-app/assets/crashcourse/sem2/BCME/page_1.jpg" alt="Page_1" class="note-image" />
-  <img src="/secure-course-app/assets/crashcourse/sem2/BCME/page_2.jpg" alt="Page_2" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem2/BCE/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem2/BCE/page_2.jpg" alt="Page 2" class="note-image" />
 
-  <!-- 🔐 Firebase Auth -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -157,14 +151,13 @@
       document.getElementById("sidebar").classList.toggle("open");
     }
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
+      const images = document.querySelectorAll('.note-image');
       if (user) {
         const email = user.email.toLowerCase();
         db.collection("approvedUsers").doc(email).get().then(doc => {
           if (doc.exists) {
-            document.querySelectorAll('.note-image').forEach(img => {
-              img.classList.add('unlocked');
-            });
+            images.forEach(img => img.classList.add('unlocked'));
           }
         });
       }
