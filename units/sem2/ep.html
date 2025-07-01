@@ -9,22 +9,22 @@
       font-family: Arial, sans-serif;
       background-color: #f3f4f6;
       margin: 0;
-      padding: 0 20px;
+      padding: 0;
       user-select: none;
+      overflow: hidden;
     }
     h1 {
       text-align: center;
-      margin-top: 20px;
+      margin: 0;
+      padding: 15px 0;
+      background-color: #2c3e50;
+      color: white;
     }
     iframe {
       display: block;
-      margin: 30px auto;
-      border: none;
       width: 100%;
-      max-width: 850px;
-      height: 600px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      height: calc(100vh - 60px); /* Header height subtracted */
+      border: none;
     }
     .sidebar {
       position: fixed;
@@ -74,11 +74,10 @@
   </style>
 </head>
 <body oncontextmenu="return false">
-
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+  
   <div class="sidebar" id="sidebar">
     <h2>Cheat Sheet – Engineering Physics</h2>
-
     <strong>Module 1: Wave Nature & Schrodinger Equation</strong>
     <ul>
       <li>Heisenberg’s Uncertainty Principle (Stated & proved)</li>
@@ -119,14 +118,11 @@
 
   <h1>Engineering Physics – Crash Course</h1>
 
-  <!-- Google Drive embedded PDF viewer -->
+  <!-- Fullscreen Google Drive PDF Viewer -->
   <iframe src="https://drive.google.com/file/d/10gj5hHwKLSn8LkKpZ3poJW1ZOQM8Do5P/preview" allow="autoplay"></iframe>
 
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+  
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
