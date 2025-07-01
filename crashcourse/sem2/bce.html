@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>BCE – Crash Course Notes</title>
-  <link rel="stylesheet" href="../../../css/style.css" />
+  <link rel="stylesheet" href="/secure-course-app/css/style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -77,49 +77,48 @@
   </style>
 </head>
 <body oncontextmenu="return false">
+
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
   <div class="sidebar" id="sidebar">
     <h2>Cheat Sheet – BCE</h2>
-    <strong>Unit I: Computer Fundamentals & OS</strong>
+
+    <strong>Unit I: Building Materials & Construction</strong>
     <ul>
-      <li>System vs. application software</li>
-      <li>Types of memory: RAM, ROM, cache</li>
-      <li>Functions and types of OS</li>
-      <li>Applications: e-business, remote sensing</li>
+      <li>Workability of concrete – factors</li>
+      <li>Plastering & pointing</li>
+      <li>Types of staircases</li>
     </ul>
-    <strong>Unit II: Programming Basics & C++</strong>
+    <strong>Unit II: Surveying & Positioning</strong>
     <ul>
-      <li>Flowcharts and algorithm design</li>
-      <li>Procedural vs. OOP</li>
-      <li>Data types, tokens, variables in C++</li>
-      <li>Simple C++ programs with control structures</li>
+      <li>Reciprocal levelling</li>
+      <li>Theodolite components</li>
+      <li>Auto level</li>
     </ul>
-    <strong>Unit III: OOP & Data Structures</strong>
+    <strong>Unit III: Mapping & Sensing</strong>
     <ul>
-      <li>Classes and objects</li>
-      <li>Constructors, destructors, friend functions</li>
-      <li>Types of inheritance</li>
-      <li>Function/operator overloading</li>
+      <li>Remote sensing</li>
+      <li>Simpson’s & Trapezoidal rule</li>
+      <li>Contour lines</li>
     </ul>
-    <strong>Unit IV: Networking & Cybersecurity</strong>
+    <strong>Unit IV: Forces & Equilibrium</strong>
     <ul>
-      <li>OSI & TCP/IP models</li>
-      <li>Firewall, malware, phishing, DoS</li>
-      <li>Cyber laws & e-commerce</li>
+      <li>Bow’s notation & FBD</li>
+      <li>Truss using joints</li>
+      <li>Lami’s theorem</li>
     </ul>
-    <strong>Unit V: DBMS & Cloud</strong>
+    <strong>Unit V: Centre of Gravity & MOI</strong>
     <ul>
-      <li>DBMS architecture, data dictionary</li>
-      <li>DDL vs. DML</li>
-      <li>Cloud models: IaaS, PaaS, SaaS</li>
-      <li>Pros & cons of cloud computing</li>
+      <li>Moment of inertia of rectangle</li>
+      <li>SFD & BMD for beams</li>
+      <li>Radius of gyration</li>
     </ul>
   </div>
 
-  <h1>Basic Computer Engineering – Crash Course</h1>
+  <h1>Basic Civil Engineering – Crash Course</h1>
 
-  <img src="../../../assets/crashcourse/sem2/BCE/page_1.jpg" alt="Page 1" class="note-image" />
-  <img src="../../../assets/crashcourse/sem2/BCE/page_2.jpg" alt="Page 2" class="note-image" />
+  <!-- Make sure these images exist in the given path -->
+  <img src="/secure-course-app/assets/crashcourse/sem2/BCE/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem2/BCE/page_2.jpg" alt="Page 2" class="note-image" />
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -143,14 +142,13 @@
       document.getElementById("sidebar").classList.toggle("open");
     }
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
+      const images = document.querySelectorAll('.note-image');
       if (user) {
         const email = user.email.toLowerCase();
         db.collection("approvedUsers").doc(email).get().then(doc => {
           if (doc.exists) {
-            document.querySelectorAll('.note-image').forEach(img => {
-              img.classList.add('unlocked');
-            });
+            images.forEach(img => img.classList.add('unlocked'));
           }
         });
       }
