@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return false">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crash Course – Basic Electrical & Electronics Engineering (BEEE)</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .note-image {
+      display: block;
+      max-width: 100%;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
+      transition: filter 0.3s ease-in-out;
+    }
+    .blurred {
+      filter: blur(10px);
+    }
+    @media print {
+      body {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Crash Course – Basic Electrical & Electronics Engineering (BEEE)</h1>
+
+  <img src="/secure-course-app/assets/crashcourse/sem1/beee/page_1.jpg" alt="Page 1" class="note-image blurred" />
+  <img src="/secure-course-app/assets/crashcourse/sem1/beee/page_2.jpg" alt="Page 2" class="note-image blurred" />
+  <img src="/secure-course-app/assets/crashcourse/sem1/beee/page_3.jpg" alt="Page 3" class="note-image blurred" />
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+      authDomain: "course-app-a1d28.firebaseapp.com",
+      projectId: "course-app-a1d28",
+      storageBucket: "course-app-a1d28.appspot.com",
+      messagingSenderId: "626435621011",
+      appId: "1:626435621011:web:86fe095d0d36de609a4d66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // On auth check Firestore role
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const email = user.email.toLowerCase();
+        db.collection("approvedUsers").doc(email).get().then(doc => {
+          if (doc.exists) {
+            const role = doc.data().role;
+            if (role === "viewer" || role === "admin") {
+              document.querySelectorAll('.note-image').forEach(img => {
+                img.classList.remove('blurred');
+              });
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

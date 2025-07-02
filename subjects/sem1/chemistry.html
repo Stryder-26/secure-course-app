@@ -2,91 +2,172 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chemistry - 1st Semester</title>
+  <title>Engineering Chemistry Notes</title>
+  <link rel="stylesheet" href="/secure-course-app/css/style.css" />
   <style>
     body {
-      font-family: "Poppins", sans-serif;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
       padding: 20px;
-      background-color: #f3f4f6;
-      text-align: center;
+      margin: 0;
+      user-select: none;
     }
-
     h1 {
-      margin-bottom: 1em;
-      color: #333;
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 18px;
-      color: #555;
-    }
-
-    .unit-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
+      text-align: center;
       margin-top: 20px;
     }
-
-    .unit-card {
-      background: white;
-      padding: 15px;
+    .note-image {
+      display: block;
+      max-width: 100%;
+      margin: 20px auto;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      transition: 0.3s ease-in-out;
-      min-width: 180px;
-      text-align: center;
+      filter: blur(10px);
+      pointer-events: none;
+      transition: filter 0.3s ease;
     }
-
-    .unit-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    .note-image.unlocked {
+      filter: none !important;
     }
-
-    a {
-      text-decoration: none;
-      color: #007BFF;
-      font-size: 1.2em;
-      font-weight: 500;
-      display: block;
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100%;
+      background: #263238;
+      color: white;
+      overflow-y: auto;
+      padding: 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 999;
     }
-
-    a:hover {
-      text-decoration: underline;
+    .sidebar.open {
+      transform: translateX(0);
     }
-
-    @media (max-width: 600px) {
-      .unit-container {
-        flex-direction: column;
-        align-items: center;
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .sidebar ul {
+      padding-left: 20px;
+    }
+    .sidebar ul li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    @media print {
+      body {
+        display: none;
       }
     }
   </style>
 </head>
-<body>
-  <h1>Chemistry - 1st Semester</h1>
-  <p>Select a Unit to view notes:</p>
+<body oncontextmenu="return false" oncopy="return false">
 
-  <div class="unit-container">
-    <div class="unit-card">
-      <a href="../../units/sem1/chemistry/unit1.html">Unit 1</a>
-    </div>
-    <div class="unit-card">
-      <a href="../../units/sem1/chemistry/unit2.html">Unit 2</a>
-    </div>
-    <div class="unit-card">
-      <a href="../../units/sem1/chemistry/unit3.html">Unit 3</a>
-    </div>
-    <div class="unit-card">
-      <a href="../../units/sem1/chemistry/unit4.html">Unit 4</a>
-    </div>
-    <div class="unit-card">
-      <a href="../../units/sem1/chemistry/unit5.html">Unit 5</a>
-    </div>
-  </div>
+  <h1>Engineering Chemistry Notes</h1>
+
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit1/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit2/page_9.jpg" alt="Page 9" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit3/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_9.jpg" alt="Page 9" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_10.jpg" alt="Page 10" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_11.jpg" alt="Page 11" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_12.jpg" alt="Page 12" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_13.jpg" alt="Page 13" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_14.jpg" alt="Page 14" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_15.jpg" alt="Page 15" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit4/page_16.jpg" alt="Page 16" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_3.jpg" alt="Page 3" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_4.jpg" alt="Page 4" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_5.jpg" alt="Page 5" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_6.jpg" alt="Page 6" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_7.jpg" alt="Page 7" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_8.jpg" alt="Page 8" class="note-image" />
+  <img src="/secure-course-app/assets/notes/sem1/chemistry/unit5/page_9.jpg" alt="Page 9" class="note-image" />
+
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+      authDomain: "course-app-a1d28.firebaseapp.com",
+      projectId: "course-app-a1d28",
+      storageBucket: "course-app-a1d28.appspot.com",
+      messagingSenderId: "626435621011",
+      appId: "1:626435621011:web:86fe095d0d36de609a4d66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email.toLowerCase();
+        db.collection("approvedUsers").doc(email).get().then(doc => {
+          if (doc.exists) {
+            document.querySelectorAll('.note-image').forEach(img => {
+              img.classList.add('unlocked');
+            });
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
