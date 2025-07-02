@@ -98,24 +98,30 @@
     }
     .semester-block { flex: 1; margin: 10px; }
     .semester-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      text-align: center;
-    }
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-align: center;
+  }
     .semester-card:hover { transform: scale(1.03); }
     .subject-list-box {
-      background: #f9f9f9;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
-    }
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+ }
+
     .subject-list {
       list-style: none;
       padding-left: 20px;
@@ -128,13 +134,18 @@
     }
     .subject-list.open { max-height: 500px; }
     .subject-list li {
-      padding: 10px 15px;
-      margin: 6px 0;
-      border-radius: 6px;
-      background: #ffffff;
-      border: 1px solid #dfe9f3;
-      transition: all 0.25s ease;
-    }
+  padding: 10px 15px;
+  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  color: white;
+  transition: all 0.25s ease;
+  }
+
     .subject-list li:hover {
       background: #cde9ff;
       color: #000;
@@ -143,10 +154,11 @@
       cursor: pointer;
     }
     .subject-list li a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
+  text-decoration: none;
+  color: white;
+  display: block;
+  }
+
     .section-title {
       font-size: 22px;
       margin: 30px 0 10px;
@@ -198,6 +210,17 @@
     #pending-users-list li, #active-users-list li {
       margin: 5px 0;
     }
+    .glass-section {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
   </style>
 </head>
 <body oncopy="return false">
@@ -223,9 +246,10 @@
 
   <div class="container" id="main-content" style="display: none;">
     <!-- 📝 Notes Section -->
-    <h2 class="section-title">📝 Notes</h2>
-    <div class="section">
-      <div class="semester-block">
+    <div class="glass-section">
+  <h2 class="section-title">📝 Notes</h2>
+  <div class="section">
+          <div class="semester-block">
         <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
         <div class="subject-list-box">
           <ul id="notes-sem1" class="subject-list">
@@ -252,6 +276,7 @@
     </div>
 
     <!-- ⚡ Crash Course Section -->
+      <div class="glass-section">
     <h2 class="section-title">⚡ Crash Course</h2>
     <div class="section">
       <div class="semester-block">
