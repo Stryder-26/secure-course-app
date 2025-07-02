@@ -59,6 +59,7 @@
       user-select: none;
       -webkit-user-select: none;
     }
+
     header {
       background: #2c3e50;
       color: white;
@@ -66,6 +67,7 @@
       text-align: center;
       font-size: 24px;
     }
+
     .countdown {
       text-align: center;
       font-size: 20px;
@@ -74,15 +76,116 @@
       animation: flash 1s infinite;
       color: #e74c3c;
     }
+
     @keyframes flash {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.2; }
     }
+
     .container {
       padding: 30px;
       max-width: 1000px;
       margin: auto;
     }
+    .glass-title {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 0;
+      color: #fff;
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .semester-block {
+      flex: 1;
+      margin: 10px;
+    }
+
+    .semester-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      text-align: center;
+      color: #666;
+    }
+
+    .semester-card:hover {
+      transform: scale(1.03);
+      color: #000;
+    }
+
+    .subject-list-box {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .subject-list {
+      list-style: none;
+      padding-left: 20px;
+      margin: 0;
+      border-radius: 8px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+    }
+
+    .subject-list.open {
+      max-height: 500px;
+    }
+
+    .subject-list li {
+      padding: 10px 15px;
+      margin: 6px 0;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #666;
+      transition: all 0.3s ease;
+    }
+    .subject-list li:hover {
+      background: #cde9ff;
+      color: #000;
+      transform: translateX(5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .subject-list li a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
     .watermark {
       position: fixed;
       top: 10px;
@@ -93,83 +196,13 @@
       z-index: 9999;
       pointer-events: none;
     }
+
     @media print {
-      body { display: none; }
+      body {
+        display: none;
+      }
     }
-    .semester-block { flex: 1; margin: 10px; }
-    .semester-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  color: white;
-  padding: 20px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  text-align: center;
-  }
-    .semester-card:hover { transform: scale(1.03); }
-    .subject-list-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
- }
 
-    .subject-list {
-      list-style: none;
-      padding-left: 20px;
-      margin: 0;
-      background: #fdfdfd;
-      border-radius: 8px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease-in-out;
-    }
-    .subject-list.open { max-height: 500px; }
-    .subject-list li {
-  padding: 10px 15px;
-  margin: 6px 0;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  color: white;
-  transition: all 0.25s ease;
-  }
-
-    .subject-list li:hover {
-      background: #cde9ff;
-      color: #000;
-      transform: translateX(5px);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-    }
-    .subject-list li a {
-  text-decoration: none;
-  color: white;
-  display: block;
-  }
-
-    .section-title {
-      font-size: 22px;
-      margin: 30px 0 10px;
-      text-align: center;
-    }
-    .section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 10px;
-    }
     #login-overlay {
       position: fixed;
       top: 0;
@@ -183,6 +216,7 @@
       align-items: center;
       z-index: 1000;
     }
+
     #login-box {
       background: white;
       padding: 30px 40px;
@@ -190,6 +224,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
+
     #login-btn {
       background-color: #4285f4;
       color: white;
@@ -199,6 +234,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     #admin-tools {
       display: none;
       margin-top: 40px;
@@ -207,20 +243,11 @@
       border: 2px solid #fbc02d;
       border-radius: 10px;
     }
-    #pending-users-list li, #active-users-list li {
+
+    #pending-users-list li,
+    #active-users-list li {
       margin: 5px 0;
     }
-    .glass-section {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
   </style>
 </head>
 <body oncopy="return false">
@@ -230,7 +257,6 @@
     <div class="slideshow-image"></div>
     <div class="slideshow-image"></div>
   </div>
-
   <div class="watermark">User: guest@example.com | Accessed: 2025-06-17</div>
 
   <div id="login-overlay">
@@ -245,11 +271,13 @@
   <div id="countdown" class="countdown">Time Remaining for endsem: ...</div>
 
   <div class="container" id="main-content" style="display: none;">
+    
     <!-- 📝 Notes Section -->
-    <div class="glass-section">
-  <h2 class="section-title">📝 Notes</h2>
-  <div class="section">
-          <div class="semester-block">
+    <div class="glass-title">
+      <h2 class="section-title">📝 Notes</h2>
+    </div>
+    <div class="section">
+      <div class="semester-block">
         <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
         <div class="subject-list-box">
           <ul id="notes-sem1" class="subject-list">
@@ -276,14 +304,16 @@
     </div>
 
     <!-- ⚡ Crash Course Section -->
-      <div class="glass-section">
-    <h2 class="section-title">⚡ Crash Course</h2>
+    <div class="glass-title">
+      <h2 class="section-title">⚡ Crash Course</h2>
+    </div>
     <div class="section">
       <div class="semester-block">
         <div class="semester-card" onclick="toggleSubjects('crash-sem1')">🧩 1st Semester</div>
         <div class="subject-list-box">
           <ul id="crash-sem1" class="subject-list">
             <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
+            <li><a href="crashcourse/sem1/m1.html" target="_blank">BT104 Basic Electrical & Electronics Engineering</a></li>
             <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
           </ul>
         </div>
@@ -301,6 +331,7 @@
         </div>
       </div>
     </div>
+
     <!-- Admin Tools -->
     <div id="admin-tools">
       <h3>🛠️ Admin Tools</h3>
@@ -309,7 +340,6 @@
       <h4>Manually Approve Email</h4>
       <input type="email" id="manual-email" placeholder="Enter email to approve" />
       <button onclick="manuallyApprove()">✅ Approve</button>
-
       <h4>Live Active Users</h4>
       <ul id="active-users-list"></ul>
     </div>
