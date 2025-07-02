@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Engineering Physics – Crash Course</title>
-  <link rel="stylesheet" href="../../../css/style.css" />
+  <link rel="stylesheet" href="/secure-course-app/css/style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -77,7 +77,11 @@
   </style>
 </head>
 <body oncontextmenu="return false">
+
+  <!-- Sidebar toggle -->
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+
+  <!-- Slide-in sidebar -->
   <div class="sidebar" id="sidebar">
     <h2>Cheat Sheet – Engineering Physics</h2>
 
@@ -121,10 +125,12 @@
 
   <h1>Engineering Physics – Crash Course</h1>
 
-  <img src="../../../assets/crashcourse/sem2/EP/page_1.jpg" alt="Page 1" class="note-image" />
-  <img src="../../../assets/crashcourse/sem2/EP/page_2.jpg" alt="Page 2" class="note-image" />
-  <img src="../../../assets/crashcourse/sem2/EP/page_3.jpg" alt="Page 3" class="note-image" />
+  <!-- Notes Images -->
+  <img src="/secure-course-app/assets/crashcourse/sem2/EP/page_1.jpg" alt="Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem2/EP/page_2.jpg" alt="Page 2" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem2/EP/page_3.jpg" alt="Page 3" class="note-image" />
 
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
