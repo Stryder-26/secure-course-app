@@ -6,50 +6,50 @@
   <title>Crack Notes</title>
   <style>
     .slideshow-container {
-   position: fixed;
-   top: 0;
-   left: 0;
-   z-index: -1;
-   width: 100vw;
-   height: 100vh;
-   overflow: hidden;
-  }
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-   .slideshow-image {
-   position: absolute;
-   width: 100%;
-   height: 100%;
-   background-size: cover;
-   background-position: center;
-   opacity: 0;
-   animation: fadeSlideshow 40s infinite;
-   transition: opacity 1s ease-in-out;
-   }
-  
-   .slideshow-image:nth-child(1) {
-   animation-delay: 0s;
-   background-image: url('/secure-course-app/assets/backgrounds/bg_1.jpg');
-   }
-   .slideshow-image:nth-child(2) {
-   animation-delay: 10s;
-   background-image: url('/secure-course-app/assets/backgrounds/bg_2.jpg');
-   }
-   .slideshow-image:nth-child(3) {
-   animation-delay: 20s;
-   background-image: url('/secure-course-app/assets/backgrounds/bg_3.jpg');
-   }
-   .slideshow-image:nth-child(4) {
-   animation-delay: 30s;
-   background-image: url('/secure-course-app/assets/backgrounds/bg_4.jpg');
-   }
+    .slideshow-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: fadeSlideshow 40s infinite;
+      transition: opacity 1s ease-in-out;
+    }
 
-   @keyframes fadeSlideshow {
-   0% { opacity: 0; }
-   10% { opacity: 1; }
-   25% { opacity: 1; }
-   35% { opacity: 0; }
-   100% { opacity: 0; }
-   }
+    .slideshow-image:nth-child(1) {
+      animation-delay: 0s;
+      background-image: url('/secure-course-app/assets/backgrounds/bg_1.jpg');
+    }
+    .slideshow-image:nth-child(2) {
+      animation-delay: 10s;
+      background-image: url('/secure-course-app/assets/backgrounds/bg_2.jpg');
+    }
+    .slideshow-image:nth-child(3) {
+      animation-delay: 20s;
+      background-image: url('/secure-course-app/assets/backgrounds/bg_3.jpg');
+    }
+    .slideshow-image:nth-child(4) {
+      animation-delay: 30s;
+      background-image: url('/secure-course-app/assets/backgrounds/bg_4.jpg');
+    }
+
+    @keyframes fadeSlideshow {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      25% { opacity: 1; }
+      35% { opacity: 0; }
+      100% { opacity: 0; }
+    }
 
     body {
       font-family: Arial, sans-serif;
@@ -202,11 +202,11 @@
 </head>
 <body oncopy="return false">
   <div class="slideshow-container">
-  <div class="slideshow-image"></div>
-  <div class="slideshow-image"></div>
-  <div class="slideshow-image"></div>
-  <div class="slideshow-image"></div>
-</div>
+    <div class="slideshow-image"></div>
+    <div class="slideshow-image"></div>
+    <div class="slideshow-image"></div>
+    <div class="slideshow-image"></div>
+  </div>
 
   <div class="watermark">User: guest@example.com | Accessed: 2025-06-17</div>
 
@@ -222,8 +222,6 @@
   <div id="countdown" class="countdown">Time Remaining for endsem: ...</div>
 
   <div class="container" id="main-content" style="display: none;">
-
-<<<<<<< HEAD
     <!-- 📝 Notes Section -->
     <h2 class="section-title">📝 Notes</h2>
     <div class="section">
@@ -231,7 +229,7 @@
         <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
         <div class="subject-list-box">
           <ul id="notes-sem1" class="subject-list">
-            <li><a href="/secure-course-app/subjects/sem1/chemistry.html" target="_blank">BT101 Engineering Chemistry</a></li>
+            <li><a href="secure-course-app/subjects/sem1/chemistry.html" target="_blank">BT101 Engineering Chemistry</a></li>
             <li>BT102 MATHEMATICS-I</li>
             <li>BT103 English for Communication</li>
             <li>BT104 Basic Electrical & Electronics Engineering</li>
@@ -251,38 +249,8 @@
           </ul>
         </div>
       </div>
-=======
-   <!-- 📝 Notes Section -->
-<h2 class="section-title">📝 Notes</h2>
-<div class="section">
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
-    <div class="subject-list-box">
-      <ul id="notes-sem1" class="subject-list">
-        <li>BT101 Engineering Chemistry</li>
-        <li>BT102 MATHEMATICS-I</li>
-        <li>BT103 English for Communication</li>
-        <li>BT104 Basic Electrical & Electronics Engineering</li>
-        <li>BT105 Engineering Graphics</li>
-      </ul>
->>>>>>> 7d02e27e0e96d13377118bff4425bd8878c23d5b
     </div>
-  </div>
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('notes-sem2')">⚙️ 2nd Semester</div>
-    <div class="subject-list-box">
-      <ul id="notes-sem2" class="subject-list">
-        <li><a href="/secure-course-app/units/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
-        <li>BT202 MATHEMATICS-II</li>
-        <li>BT203 Basic Mechanical Engineering</li>
-        <li>BT204 Basic Civil Engineering & Mechanics</li>
-        <li>BT205 Basic Computer Engineering</li>
-      </ul>
-    </div>
-  </div>
-</div>
 
-<<<<<<< HEAD
     <!-- ⚡ Crash Course Section -->
     <h2 class="section-title">⚡ Crash Course</h2>
     <div class="section">
@@ -292,7 +260,6 @@
           <ul id="crash-sem1" class="subject-list">
             <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
             <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
-            
           </ul>
         </div>
       </div>
@@ -308,34 +275,7 @@
           </ul>
         </div>
       </div>
-=======
-<!-- ⚡ Crash Course Section -->
-<h2 class="section-title">⚡ Crash Course</h2>
-<div class="section">
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('crash-sem1')">🧩 1st Semester</div>
-    <div class="subject-list-box">
-      <ul id="crash-sem1" class="subject-list">
-        <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
-        <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
-      </ul>
->>>>>>> 7d02e27e0e96d13377118bff4425bd8878c23d5b
     </div>
-  </div>
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('crash-sem2')">⚙️ 2nd Semester</div>
-    <div class="subject-list-box">
-      <ul id="crash-sem2" class="subject-list">
-        <li><a href="crashcourse/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
-        <li><a href="crashcourse/sem2/m2.html" target="_blank">BT202 MATHEMATICS-II</a></li>
-        <li><a href="crashcourse/sem2/bme.html" target="_blank">BT203 Basic Mechanical Engineering</a></li>
-        <li><a href="crashcourse/sem2/bcme.html" target="_blank">BT204 Basic Civil Engineering & Mechanics</a></li>
-        <li><a href="crashcourse/sem2/bce.html" target="_blank">BT205 Basic Computer Engineering</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
     <!-- Admin Tools -->
     <div id="admin-tools">
       <h3>🛠️ Admin Tools</h3>
