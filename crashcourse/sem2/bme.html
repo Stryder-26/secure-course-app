@@ -12,10 +12,12 @@
       padding: 0 20px;
       user-select: none;
     }
+
     h1 {
       text-align: center;
       margin-top: 20px;
     }
+
     .note-image {
       display: block;
       max-width: 100%;
@@ -26,9 +28,11 @@
       pointer-events: none;
       transition: filter 0.3s ease;
     }
+
     .note-image.unlocked {
       filter: none !important;
     }
+
     .sidebar {
       position: fixed;
       top: 0;
@@ -43,20 +47,25 @@
       transition: transform 0.3s ease-in-out;
       z-index: 999;
     }
+
     .sidebar.open {
       transform: translateX(0);
     }
+
     .sidebar h2 {
       font-size: 18px;
       margin-bottom: 10px;
     }
+
     .sidebar ul {
       padding-left: 20px;
     }
+
     .sidebar ul li {
       margin-bottom: 8px;
       font-size: 14px;
     }
+
     .toggle-btn {
       position: fixed;
       top: 20px;
@@ -69,6 +78,7 @@
       cursor: pointer;
       z-index: 1000;
     }
+
     @media print {
       body {
         display: none;
@@ -78,8 +88,15 @@
 </head>
 <body oncontextmenu="return false" oncopy="return false">
 
+<<<<<<< HEAD
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
 
+=======
+  <!-- 🔥 Hot Topics Button -->
+  <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+
+  <!-- 📚 Sidebar -->
+>>>>>>> 7d02e27e0e96d13377118bff4425bd8878c23d5b
   <div class="sidebar" id="sidebar">
     <h2>Cheat Sheet – BME</h2>
     <strong>Unit I: Materials</strong>
@@ -114,12 +131,18 @@
     </ul>
   </div>
 
+  <!-- 🧠 Page Title -->
   <h1>Basic Mechanical Engineering – Crash Course</h1>
 
+<<<<<<< HEAD
+=======
+  <!-- 🖼️ Notes Images -->
+>>>>>>> 7d02e27e0e96d13377118bff4425bd8878c23d5b
   <img src="/secure-course-app/assets/crashcourse/sem2/BME/page_1.jpg" alt="Page 1" class="note-image" />
   <img src="/secure-course-app/assets/crashcourse/sem2/BME/page_2.jpg" alt="Page 2" class="note-image" />
   <img src="/secure-course-app/assets/crashcourse/sem2/BME/page_3.jpg" alt="Page 3" class="note-image" />
 
+  <!-- 🔐 Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
