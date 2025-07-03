@@ -479,7 +479,7 @@
             const role = doc.data().role;
             loginOverlay.style.display = "none";
             mainContent.style.display = "block";
-            runScrollAnimation(); // ⬅️ this triggers the scroll effect
+           
             if (role === "admin") {
               adminTools.style.display = "block";
               loadPendingUsers();
@@ -564,17 +564,7 @@
       }, 1000);
     }
     startCountdown();
-    function runScrollAnimation() {
-  const animator = document.getElementById("scroll-animator");
-  animator.style.transform = "translateY(-60px)"; // move up slightly
-  animator.style.transition = "transform 3s ease-in-out";
-
-  setTimeout(() => {
-    animator.style.transform = "translateY(0)";
-    animator.style.transition = "none";
-  }, 3000);
-}
-
+    
   </script>
 </body>
 </html>
