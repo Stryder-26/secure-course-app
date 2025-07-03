@@ -328,7 +328,10 @@
 
   <div id="countdown" class="countdown">Time Remaining for endsem: ...</div>
 
-  <div class="container" id="main-content" style="display: none;">
+  <div id="content-wrapper" style="overflow: hidden; height: 100vh;">
+  <div id="scroll-animator" style="transition: transform 3s ease;">
+    <div class="container" id="main-content" style="display: none;">
+
     
     <!-- 📝 Notes Section -->
     <div class="glass-title">
@@ -401,6 +404,10 @@
       <h4>Live Active Users</h4>
       <ul id="active-users-list"></ul>
     </div>
+          </div> <!-- end of #main-content -->
+  </div> <!-- end of #scroll-animator -->
+</div> <!-- end of #content-wrapper -->
+
   </div>
 
   <!-- Firebase SDK -->
@@ -472,6 +479,7 @@
             const role = doc.data().role;
             loginOverlay.style.display = "none";
             mainContent.style.display = "block";
+            runScrollAnimation(); // ⬅️ this triggers the scroll effect
             if (role === "admin") {
               adminTools.style.display = "block";
               loadPendingUsers();
@@ -556,6 +564,17 @@
       }, 1000);
     }
     startCountdown();
+    function runScrollAnimation() {
+  const animator = document.getElementById("scroll-animator");
+  animator.style.transform = "translateY(-60px)"; // move up slightly
+  animator.style.transition = "transform 3s ease-in-out";
+
+  setTimeout(() => {
+    animator.style.transform = "translateY(0)";
+    animator.style.transition = "none";
+  }, 3000);
+}
+
   </script>
 </body>
 </html>
