@@ -263,27 +263,26 @@
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: url('/secure-course-app/assets/backgrounds/bg_5.png') center center / cover no-repeat;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1); /* light transparent layer */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(4px);
-  background-color: rgba(0, 0, 0, 0.6); /* fallback overlay for better contrast */
 ">
 
   <div id="login-box" style="
-    background-color: rgba(20, 20, 20, 0.9);
+    background: url('/secure-course-app/assets/backgrounds/bg_5.png') center center / cover no-repeat;
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
     color: #eee;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     max-width: 400px;
     width: 90%;
   ">
     <h2 style="color: #fff; margin-bottom: 0.5rem;">🔒 Crack Notes Access</h2>
-    <p style="color: #ccc; margin-bottom: 1.5rem;">Please sign in with your Google account to continue</p>
+    <p style="color: #ddd; margin-bottom: 1.5rem;">Please sign in with your Google account to continue</p>
     <button id="login-btn" style="
       background-color: #4285F4;
       color: white;
@@ -297,7 +296,6 @@
   </div>
 
 </div>
-
 
  <header style="
   background-image: url('https://i.pinimg.com/originals/78/78/63/787863a56b90d5f42791890a53b368d7.jpg');
