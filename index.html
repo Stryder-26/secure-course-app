@@ -401,9 +401,9 @@
 <div class="section">
   <!-- 1st Semester -->
   <div class="semester-block">
-    <div class="semester-card">🧩 1st Semester</div>
+    <div class="semester-card" onclick="toggleSubjects('timetable-sem1')">🧩 1st Semester</div>
     <div class="subject-list-box">
-      <ul class="subject-list open" style="list-style: none; padding-left: 0;">
+      <ul id="timetable-sem1" class="subject-list" style="list-style: none; padding-left: 0;">
         <li>📆 16/07/2025 (Wed): BT101 Engineering Chemistry</li>
         <li>📆 21/07/2025 (Mon): BT102 Mathematics – I</li>
         <li>📆 25/07/2025 (Fri): BT103 English for Communication</li>
@@ -415,9 +415,9 @@
 
   <!-- 2nd Semester -->
   <div class="semester-block">
-    <div class="semester-card">⚙️ 2nd Semester</div>
+    <div class="semester-card" onclick="toggleSubjects('timetable-sem2')">⚙️ 2nd Semester</div>
     <div class="subject-list-box">
-      <ul class="subject-list open" style="list-style: none; padding-left: 0;">
+      <ul id="timetable-sem2" class="subject-list" style="list-style: none; padding-left: 0;">
         <li>📆 18/07/2025 (Fri): BT201 Engineering Physics</li>
         <li>📆 23/07/2025 (Wed): BT202 Mathematics – II</li>
         <li>📆 28/07/2025 (Mon): BT203 Basic Mechanical Engineering</li>
@@ -431,21 +431,6 @@
   </div>
 </div>
 
-      <div style="text-align: center; margin-top: 30px;">
-  <a href="/secure-course-app/assets/UPI/download.pdf" target="_blank" download style="
-    background: #28a745;
-    color: #fff;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    transition: background 0.3s ease;
-  " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-    📎 Download TIME TABLE PDF
-  </a>
-</div>
 
       <div style="text-align: center; margin-top: 30px;">
   <a href="/secure-course-app/assets/UPI/download.pdf" target="_blank" download style="
@@ -463,7 +448,7 @@
   </a>
 </div>
 
-      
+        
     <!-- Admin Tools -->
     <div id="admin-tools">
       <h3>🛠️ Admin Tools</h3>
