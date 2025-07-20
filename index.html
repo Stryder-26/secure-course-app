@@ -545,21 +545,11 @@
             }
           } else {
             db.collection("approvedUsers").doc(email).get().then(doc => {
-  loginOverlay.style.display = "none";
-  mainContent.style.display = "block";
-
   if (doc.exists) {
-    const role = doc.data().role;
-    if (role === "admin") {
-      adminTools.style.display = "block";
-      loadPendingUsers();
-      loadActiveUsers();
-    }
+    // show content
   } else {
-    db.collection("loginAttempts").doc(email).set({
-      email: email,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    // 🚫 Access Denied
+    auth.signOut();
   }
 });
 
