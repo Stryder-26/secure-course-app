@@ -544,15 +544,26 @@
               loadActiveUsers();
             }
           } else {
-            db.collection("loginAttempts").doc(email).set({
-              email: email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
-            alert("🚫 Access Denied: You are not an approved user.");
-            auth.signOut();
+            db.collection("approvedUsers").doc(email).get().then(doc => {
+  loginOverlay.style.display = "none";
+  mainContent.style.display = "block";
+
+  if (doc.exists) {
+    const role = doc.data().role;
+    if (role === "admin") {
+      adminTools.style.display = "block";
+      loadPendingUsers();
+      loadActiveUsers();
+    }
+  } else {
+    db.collection("loginAttempts").doc(email).set({
+      email: email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  }
+});
+
           }
-        });
-      }
     });
 
     function manuallyApprove() {
