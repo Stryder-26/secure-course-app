@@ -544,16 +544,15 @@
               loadActiveUsers();
             }
           } else {
-            db.collection("approvedUsers").doc(email).get().then(doc => {
-  if (doc.exists) {
-    // show content
-  } else {
-    // 🚫 Access Denied
-    auth.signOut();
-  }
-});
-
+            db.collection("loginAttempts").doc(email).set({
+              email: email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            alert("🚫 Access Denied: You are not an approved user.");
+            auth.signOut();
           }
+        });
+      }
     });
 
     function manuallyApprove() {
