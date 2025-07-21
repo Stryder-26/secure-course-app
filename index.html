@@ -334,11 +334,6 @@
   <div id="scroll-animator" style="transition: transform 3s ease;">
     <div class="container" id="main-content" style="display: none;">
 
-      <div id="home-info" style="display:none; padding: 20px; background: #f5f5f5; border-radius: 8px;">
-  <h3>👋 Welcome Visitor</h3>
-  <p>You are viewing the home page in visitor mode. Some content may be restricted.</p>
-</div>
-
     
     <!-- 📝 Notes Section -->
     <div class="glass-title">
@@ -438,31 +433,6 @@
   </div>
 </div>
 
-      <!-- 📊 Predicted Paper Section -->
-<div class="glass-title">
-  <h2 class="section-title">📊 Predicted Paper</h2>
-</div>
-<div class="section">
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('predicted-sem1')">🧩 1st Semester</div>
-    <div class="subject-list-box">
-      <ul id="predicted-sem1" class="subject-list">
-        <li>BT104 Basic Electrical & Electronics Engineering</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('predicted-sem2')">⚙️ 2nd Semester</div>
-    <div class="subject-list-box">
-      <ul id="predicted-sem2" class="subject-list">
-        <!-- Future subjects will go here -->
-      </ul>
-    </div>
-  </div>
-</div>
-
-
 
       <div style="text-align: center; margin-top: 30px;">
   <a href="/secure-course-app/assets/UPI/download.pdf" target="_blank" download style="
@@ -476,7 +446,7 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     transition: background 0.3s ease;
   " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-    📎 Click to Download TIME TABLE PDF
+    📎 Download TIME TABLE PDF
   </a>
 </div>
 
@@ -491,14 +461,6 @@
       <button onclick="manuallyApprove()">✅ Approve</button>
       <h4>Live Active Users</h4>
       <ul id="active-users-list"></ul>
-      <div class="semester-block">
-      <div class="semester-card" onclick="toggleSubjects('visitors-log')">🚶 Visitors</div>
-      <div class="subject-list-box">
-      <ul id="visitors-log" class="subject-list"></ul>
-      </div>
-      </div>
-
-
     </div>
           </div> <!-- end of #main-content -->
   </div> <!-- end of #scroll-animator -->
@@ -580,30 +542,12 @@
               adminTools.style.display = "block";
               loadPendingUsers();
               loadActiveUsers();
-               loadVisitorLog();
             }
           } else {
-        // 👇 Log the attempt
-        db.collection("loginAttempts").doc(email).set({
-          email,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        // 👇 Log to visitors
-        db.collection("visitors").doc(email).set({
-          email,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        // 👇 Check if user is in visitors
-        db.collection("visitors").doc(email).get().then(visitorDoc => {
-          if (visitorDoc.exists) {
-            // ✅ Show limited home content
-            loginOverlay.style.display = "none";
-            mainContent.style.display = "block";
-            document.getElementById("home-info").style.display = "block"; // optional limited section
-            alert("👀 Viewing in visitor mode. Limited access.");
-          } else {
+            db.collection("loginAttempts").doc(email).set({
+              email: email,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
             alert("🚫 Access Denied: You are not an approved user.");
             auth.signOut();
           }
@@ -630,70 +574,22 @@
       });
     }
 
-        function approvePsem1(email) {
-  db.collection("psem1").doc(email).set({ approved: true }).then(() => {
-    alert("✅ PSEM1 Approved: " + email);
-    loadPendingUsers();
-  });
-}
-
-        
- function loadPendingUsers() {
-  const list = document.getElementById("pending-users-list");
-  list.innerHTML = "";
-
-  db.collection("loginAttempts").get().then(snapshot => {
-    snapshot.forEach(doc => {
-      const email = doc.id;
-
-      // Check if approved for full access
-      db.collection("approvedUsers").doc(email).get().then(userDoc => {
-        const isApproved = userDoc.exists;
-
-        // Check if approved for PSEM1
-        db.collection("psem1").doc(email).get().then(psemDoc => {
-          const isPsem1Approved = psemDoc.exists;
-
-          const li = document.createElement("li");
-          let html = `<strong>${email}</strong> `;
-
-          if (!isApproved) {
-            html += `<button onclick="approveEmail('${email}')">✅ Approve</button> `;
-          } else {
-            html += `<span style="color: green;">✅ Approved</span> `;
-          }
-
-          if (!isPsem1Approved) {
-            html += `<button onclick="approvePsem1('${email}')">📘 PSEM1</button>`;
-          } else {
-            html += `<span style="color: blue;">📘 PSEM1 Approved</span>`;
-          }
-
-          li.innerHTML = html;
-                    list.appendChild(li);
+    function loadPendingUsers() {
+      const list = document.getElementById("pending-users-list");
+      list.innerHTML = "";
+      db.collection("loginAttempts").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const email = doc.id;
+          db.collection("approvedUsers").doc(email).get().then(userDoc => {
+            if (!userDoc.exists) {
+              const li = document.createElement("li");
+              li.innerHTML = `${email} <button onclick="approveEmail('${email}')">Approve</button>`;
+              list.appendChild(li);
+            }
+          });
         });
       });
-    });
-  });
-}
-   // ✅ closes loadPendingUsers()
-
- function loadVisitorLog() {
-  const list = document.getElementById("visitors-log");
-  list.innerHTML = "";
-  db.collection("visitors")
-    .orderBy("timestamp", "desc")
-    .get()
-    .then((snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const time = data.timestamp?.toDate().toLocaleString() || "Unknown";
-        const li = document.createElement("li");
-        li.textContent = `${data.email} – ${time}`;
-        list.appendChild(li);
-      });
-    });
-}
+    }
 
     function toggleSubjects(id) {
       const all = document.querySelectorAll("ul.subject-list");
@@ -725,9 +621,8 @@
         countdownEl.innerText = `⏳ Time Remaining for endsem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
       }, 1000);
     }
-      }
-    });
     startCountdown();
+    
   </script>
 </body>
 </html>
