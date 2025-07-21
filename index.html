@@ -670,12 +670,13 @@
           }
 
           li.innerHTML = html;
-          list.appendChild(li);
-        }); // ✅ closes db.collection("psem1").doc(email).get()
-      });   // ✅ closes db.collection("approvedUsers").doc(email).get()
-    });     // ✅ closes snapshot.forEach
-  });       // ✅ closes db.collection("loginAttempts").get()
-}           // ✅ closes loadPendingUsers()
+                    list.appendChild(li);
+        });
+      });
+    });
+  });
+}
+   // ✅ closes loadPendingUsers()
 
  function loadVisitorLog() {
   const list = document.getElementById("visitors-log");
