@@ -16,7 +16,6 @@
       height: 100vh;
       overflow: hidden;
     }
-
     .slideshow-image {
       position: absolute;
       width: 100%;
@@ -27,7 +26,6 @@
       animation: fadeSlideshow 40s infinite;
       transition: opacity 1s ease-in-out;
     }
-
     .slideshow-image:nth-child(1) {
       animation-delay: 0s;
       background-image: url('/secure-course-app/assets/backgrounds/bg_1.jpg');
@@ -44,7 +42,6 @@
       animation-delay: 30s;
       background-image: url('/secure-course-app/assets/backgrounds/bg_4.jpg');
     }
-
     @keyframes fadeSlideshow {
       0% { opacity: 0; }
       10% { opacity: 1; }
@@ -52,7 +49,6 @@
       35% { opacity: 0; }
       100% { opacity: 0; }
     }
-
     body {
       font-family: Arial, sans-serif;
       background: #f0f4f8;
@@ -61,7 +57,6 @@
       user-select: none;
       -webkit-user-select: none;
     }
-
     header {
       background: #2c3e50;
       color: white;
@@ -69,7 +64,6 @@
       text-align: center;
       font-size: 24px;
     }
-
     .countdown {
       text-align: center;
       font-size: 20px;
@@ -78,12 +72,10 @@
       animation: flash 1s infinite;
       color: #e74c3c;
     }
-
     @keyframes flash {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.2; }
     }
-
     .container {
       padding: 30px;
       max-width: 1000px;
@@ -100,25 +92,21 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
-
     .section-title {
       font-size: 22px;
       margin: 0;
       color: #fff;
     }
-
     .section {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 10px;
     }
-
     .semester-block {
       flex: 1;
       margin: 10px;
     }
-
     .semester-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(8px);
@@ -133,12 +121,10 @@
       text-align: center;
       color: #F9F9F9;
     }
-
     .semester-card:hover {
       transform: scale(1.03);
       color: #000;
     }
-
     .subject-list-box {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(6px);
@@ -148,7 +134,6 @@
       border-radius: 10px;
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
     }
-
     .subject-list {
       list-style: none;
       padding-left: 20px;
@@ -158,11 +143,9 @@
       overflow: hidden;
       transition: max-height 0.4s ease-in-out;
     }
-
     .subject-list.open {
       max-height: 500px;
     }
-
     .subject-list li {
       padding: 10px 15px;
       margin: 6px 0;
@@ -181,13 +164,11 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       cursor: pointer;
     }
-
     .subject-list li a {
       text-decoration: none;
       color: inherit;
       display: block;
     }
-
     .watermark {
       position: fixed;
       top: 10px;
@@ -198,13 +179,11 @@
       z-index: 9999;
       pointer-events: none;
     }
-
     @media print {
       body {
         display: none;
       }
     }
-
     #login-overlay {
       position: fixed;
       top: 0;
@@ -218,15 +197,29 @@
       align-items: center;
       z-index: 1000;
     }
-
     #login-box {
       background: white;
       padding: 30px 40px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       text-align: center;
+      position: relative;
+      max-width: 400px;
+      width: 90%;
+      overflow: hidden;
+      z-index: 1;
     }
-
+    #login-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: url('/secure-course-app/assets/backgrounds/bg_5.png') center center / cover no-repeat;
+      filter: blur(5px) brightness(0.5);
+      z-index: -1;
+    }
     #login-btn {
       background-color: #4285f4;
       color: white;
@@ -235,8 +228,8 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-
     #admin-tools {
       display: none;
       margin-top: 40px;
@@ -245,7 +238,6 @@
       border: 2px solid #fbc02d;
       border-radius: 10px;
     }
-
     #pending-users-list li,
     #active-users-list li {
       margin: 5px 0;
@@ -260,60 +252,13 @@
     <div class="slideshow-image"></div>
   </div>
   <div class="watermark">User: guest@example.com | Accessed: 2025-06-17</div>
-
-  <div id="login-overlay" style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-">
-
-  <div id="login-box" style="
-    position: relative;
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    color: #eee;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    max-width: 400px;
-    width: 90%;
-    overflow: hidden;
-    z-index: 1;
-  ">
-    <!-- Background image and blur using ::before -->
-    <style>
-      #login-box::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: url('/secure-course-app/assets/backgrounds/bg_5.png') center center / cover no-repeat;
-        filter: blur(5px) brightness(0.5);
-        z-index: -1;
-      }
-    </style>
-
-    <h2 style="color: #fff; margin-bottom: 0.5rem;">🔒 Crack Notes Access</h2>
-    <p style="color: #ddd; margin-bottom: 1.5rem;">Please sign in with your Google account to continue</p>
-    <button id="login-btn" style="
-      background-color: #4285F4;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    ">Login with Google</button>
+  <div id="login-overlay">
+    <div id="login-box">
+      <h2 style="color: #fff; margin-bottom: 0.5rem;">🔒 Crack Notes Access</h2>
+      <p style="color: #ddd; margin-bottom: 1.5rem;">Please sign in with your Google account to continue</p>
+      <button id="login-btn">Login with Google</button>
+    </div>
   </div>
-
-</div>
-
  <header style="
   background-image: url('https://i.pinimg.com/originals/78/78/63/787863a56b90d5f42791890a53b368d7.jpg');
   background-size: cover;
@@ -327,302 +272,352 @@
 ">
   📚 Welcome to Crack Notes
 </header>
-
   <div id="countdown" class="countdown">Time Remaining for endsem: ...</div>
-
  <div id="content-wrapper" style="overflow-x: hidden; overflow-y: auto; min-height: 100vh;">
   <div id="scroll-animator" style="transition: transform 3s ease;">
     <div class="container" id="main-content" style="display: none;">
-
-    
-    <!-- 📝 Notes Section -->
-    <div class="glass-title">
-      <h2 class="section-title">📝 Notes</h2>
-    </div>
-    <div class="section">
-      <div class="semester-block">
-        <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
-        <div class="subject-list-box">
-          <ul id="notes-sem1" class="subject-list">
-            <li><a href="/secure-course-app/subjects/sem1/chemistry.html" target="_blank">BT101 Engineering Chemistry</a></li>
-            <li>BT102 MATHEMATICS-I</li>
-            <li>BT103 English for Communication</li>
-            <li>BT104 Basic Electrical & Electronics Engineering</li>
-            <li><a href="/secure-course-app/subjects/sem1/graphics.html" target="_blank">BT105 Engineering Graphics</a></li>
-          </ul>
+      <div id="home-info" style="display:none; padding: 20px; background: #f5f5f5; border-radius: 8px;">
+        <h3>👋 Welcome Visitor</h3>
+        <p>You are viewing the home page in visitor mode. Some content may be restricted.</p>
+      </div>
+      <!-- 📝 Notes Section -->
+      <div class="glass-title">
+        <h2 class="section-title">📝 Notes</h2>
+      </div>
+      <div class="section">
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('notes-sem1')">🧩 1st Semester</div>
+          <div class="subject-list-box">
+            <ul id="notes-sem1" class="subject-list">
+              <li><a href="/secure-course-app/subjects/sem1/chemistry.html" target="_blank">BT101 Engineering Chemistry</a></li>
+              <li>BT102 MATHEMATICS-I</li>
+              <li>BT103 English for Communication</li>
+              <li>BT104 Basic Electrical & Electronics Engineering</li>
+              <li><a href="/secure-course-app/subjects/sem1/graphics.html" target="_blank">BT105 Engineering Graphics</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('notes-sem2')">⚙️ 2nd Semester</div>
+          <div class="subject-list-box">
+            <ul id="notes-sem2" class="subject-list">
+              <li><a href="/secure-course-app/units/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
+              <li>BT202 MATHEMATICS-II</li>
+              <li>BT203 Basic Mechanical Engineering</li>
+              <li>BT204 Basic Civil Engineering & Mechanics</li>
+              <li>BT205 Basic Computer Engineering</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="semester-block">
-        <div class="semester-card" onclick="toggleSubjects('notes-sem2')">⚙️ 2nd Semester</div>
-        <div class="subject-list-box">
-          <ul id="notes-sem2" class="subject-list">
-            <li><a href="/secure-course-app/units/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
-            <li>BT202 MATHEMATICS-II</li>
-            <li>BT203 Basic Mechanical Engineering</li>
-            <li>BT204 Basic Civil Engineering & Mechanics</li>
-            <li>BT205 Basic Computer Engineering</li>
-          </ul>
+      <!-- ⚡ Crash Course Section -->
+      <div class="glass-title">
+        <h2 class="section-title">⚡ Crash Course</h2>
+      </div>
+      <div class="section">
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('crash-sem1')">🧩 1st Semester</div>
+          <div class="subject-list-box">
+            <ul id="crash-sem1" class="subject-list">
+              <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
+              <li><a href="crashcourse/sem1/beee.html" target="_blank">BT104 Basic Electrical & Electronics Engineering</a></li>
+              <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('crash-sem2')">⚙️ 2nd Semester</div>
+          <div class="subject-list-box">
+            <ul id="crash-sem2" class="subject-list">
+              <li><a href="crashcourse/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
+              <li><a href="crashcourse/sem2/m2.html" target="_blank">BT202 MATHEMATICS-II</a></li>
+              <li><a href="crashcourse/sem2/bme.html" target="_blank">BT203 Basic Mechanical Engineering</a></li>
+              <li><a href="crashcourse/sem2/bcme.html" target="_blank">BT204 Basic Civil Engineering & Mechanics</a></li>
+              <li><a href="crashcourse/sem2/bce.html" target="_blank">BT205 Basic Computer Engineering</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- ⚡ Crash Course Section -->
-    <div class="glass-title">
-      <h2 class="section-title">⚡ Crash Course</h2>
-    </div>
-    <div class="section">
-      <div class="semester-block">
-        <div class="semester-card" onclick="toggleSubjects('crash-sem1')">🧩 1st Semester</div>
-        <div class="subject-list-box">
-          <ul id="crash-sem1" class="subject-list">
-            <li><a href="crashcourse/sem1/m1.html" target="_blank">BT102 MATHEMATICS-I</a></li>
-            <li><a href="crashcourse/sem1/beee.html" target="_blank">BT104 Basic Electrical & Electronics Engineering</a></li>
-            <li><a href="crashcourse/sem1/ed.html" target="_blank">BT105 Engineering Graphics</a></li>
-          </ul>
+      <!-- 📅 June 2025 End Sem Exam Time Table -->
+      <div class="glass-title">
+        <h3 class="section-title" style="font-size: 20px;">📅 June 2025 End Sem Exam Time Table</h3>
+      </div>
+      <div class="section">
+        <!-- 1st Semester -->
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('timetable-sem1')">🧩 1st Semester</div>
+          <div class="subject-list-box">
+            <ul id="timetable-sem1" class="subject-list" style="list-style: none; padding-left: 0;">
+              <li>📆 16/07/2025 (Wed): BT101 Engineering Chemistry</li>
+              <li>📆 21/07/2025 (Mon): BT102 Mathematics – I</li>
+              <li>📆 25/07/2025 (Fri): BT103 English for Communication</li>
+              <li>📆 30/07/2025 (Wed): BT104 Basic Electrical and Electronics Engineering</li>
+              <li>📆 04/08/2025 (Mon): BT105 Engineering Graphics</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 2nd Semester -->
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('timetable-sem2')">⚙️ 2nd Semester</div>
+          <div class="subject-list-box">
+            <ul id="timetable-sem2" class="subject-list" style="list-style: none; padding-left: 0;">
+              <li>📆 18/07/2025 (Fri): BT201 Engineering Physics</li>
+              <li>📆 23/07/2025 (Wed): BT202 Mathematics – II</li>
+              <li>📆 28/07/2025 (Mon): BT203 Basic Mechanical Engineering</li>
+              <li>📆 01/08/2025 (Fri): BT204 Basic Civil Engg. & Engg Mechanics</li>
+              <li>📆 06/08/2025 (Wed): BT205 Basic Computer Engineering</li>
+            </ul>
+            <p style="font-size: 14px; color: #f5f5f5; margin-top: 10px;">
+              📌 <strong>Note:</strong> Practical Exams: <strong>07/08/2025 to 14/08/2025</strong>.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="semester-block">
-        <div class="semester-card" onclick="toggleSubjects('crash-sem2')">⚙️ 2nd Semester</div>
-        <div class="subject-list-box">
-          <ul id="crash-sem2" class="subject-list">
-            <li><a href="crashcourse/sem2/ep.html" target="_blank">BT201 Engineering Physics</a></li>
-            <li><a href="crashcourse/sem2/m2.html" target="_blank">BT202 MATHEMATICS-II</a></li>
-            <li><a href="crashcourse/sem2/bme.html" target="_blank">BT203 Basic Mechanical Engineering</a></li>
-            <li><a href="crashcourse/sem2/bcme.html" target="_blank">BT204 Basic Civil Engineering & Mechanics</a></li>
-            <li><a href="crashcourse/sem2/bce.html" target="_blank">BT205 Basic Computer Engineering</a></li>
-          </ul>
+      <!-- 📊 Predicted Paper Section -->
+      <div class="glass-title">
+        <h2 class="section-title">📊 Predicted Paper</h2>
+      </div>
+      <div class="section">
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('predicted-sem1')">🧩 1st Semester</div>
+          <div class="subject-list-box">
+            <ul id="predicted-sem1" class="subject-list">
+              <li>BT104 Basic Electrical & Electronics Engineering</li>
+            </ul>
+          </div>
+        </div>
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('predicted-sem2')">⚙️ 2nd Semester</div>
+          <div class="subject-list-box">
+            <ul id="predicted-sem2" class="subject-list">
+              <!-- Future subjects will go here -->
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-
-<!-- 📅 June 2025 End Sem Exam Time Table -->
-<div class="glass-title">
-  <h3 class="section-title" style="font-size: 20px;">📅 June 2025 End Sem Exam Time Table</h3>
-</div>
-
-<div class="section">
-  <!-- 1st Semester -->
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('timetable-sem1')">🧩 1st Semester</div>
-    <div class="subject-list-box">
-      <ul id="timetable-sem1" class="subject-list" style="list-style: none; padding-left: 0;">
-        <li>📆 16/07/2025 (Wed): BT101 Engineering Chemistry</li>
-        <li>📆 21/07/2025 (Mon): BT102 Mathematics – I</li>
-        <li>📆 25/07/2025 (Fri): BT103 English for Communication</li>
-        <li>📆 30/07/2025 (Wed): BT104 Basic Electrical and Electronics Engineering</li>
-        <li>📆 04/08/2025 (Mon): BT105 Engineering Graphics</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- 2nd Semester -->
-  <div class="semester-block">
-    <div class="semester-card" onclick="toggleSubjects('timetable-sem2')">⚙️ 2nd Semester</div>
-    <div class="subject-list-box">
-      <ul id="timetable-sem2" class="subject-list" style="list-style: none; padding-left: 0;">
-        <li>📆 18/07/2025 (Fri): BT201 Engineering Physics</li>
-        <li>📆 23/07/2025 (Wed): BT202 Mathematics – II</li>
-        <li>📆 28/07/2025 (Mon): BT203 Basic Mechanical Engineering</li>
-        <li>📆 01/08/2025 (Fri): BT204 Basic Civil Engg. & Engg Mechanics</li>
-        <li>📆 06/08/2025 (Wed): BT205 Basic Computer Engineering</li>
-      </ul>
-      <p style="font-size: 14px; color: #f5f5f5; margin-top: 10px;">
-        📌 <strong>Note:</strong> Practical Exams: <strong>07/08/2025 to 14/08/2025</strong>.
-      </p>
-    </div>
-  </div>
-</div>
-
-
       <div style="text-align: center; margin-top: 30px;">
-  <a href="/secure-course-app/assets/UPI/download.pdf" target="_blank" download style="
-    background: #28a745;
-    color: #fff;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    transition: background 0.3s ease;
-  " onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
-    📎 Download TIME TABLE PDF
-  </a>
-</div>
-
-        
-    <!-- Admin Tools -->
-    <div id="admin-tools">
-      <h3>🛠️ Admin Tools</h3>
-      <h4>Pending Login Requests</h4>
-      <ul id="pending-users-list"></ul>
-      <h4>Manually Approve Email</h4>
-      <input type="email" id="manual-email" placeholder="Enter email to approve" />
-      <button onclick="manuallyApprove()">✅ Approve</button>
-      <h4>Live Active Users</h4>
-      <ul id="active-users-list"></ul>
-    </div>
-          </div> <!-- end of #main-content -->
+        <a href="/secure-course-app/assets/UPI/download.pdf" target="_blank" download style="
+          background: #28a745;
+          color: #fff;
+          padding: 12px 24px;
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 8px;
+          text-decoration: none;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+          transition: background 0.3s ease;"
+          onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
+          📎 Click to Download TIME TABLE PDF
+        </a>
+      </div>
+      <!-- Admin Tools -->
+      <div id="admin-tools">
+        <h3>🛠️ Admin Tools</h3>
+        <h4>Pending Login Requests</h4>
+        <ul id="pending-users-list"></ul>
+        <h4>Manually Approve Email</h4>
+        <input type="email" id="manual-email" placeholder="Enter email to approve" />
+        <button onclick="manuallyApprove()">✅ Approve</button>
+        <h4>Live Active Users</h4>
+        <ul id="active-users-list"></ul>
+        <div class="semester-block">
+          <div class="semester-card" onclick="toggleSubjects('visitors-log')">🚶 Visitors</div>
+          <div class="subject-list-box">
+            <ul id="visitors-log" class="subject-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end of #main-content -->
   </div> <!-- end of #scroll-animator -->
 </div> <!-- end of #content-wrapper -->
-
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
-      authDomain: "course-app-a1d28.firebaseapp.com",
-      projectId: "course-app-a1d28",
-      storageBucket: "course-app-a1d28.appspot.com",
-      messagingSenderId: "626435621011",
-      appId: "1:626435621011:web:86fe095d0d36de609a4d66",
-      measurementId: "G-8C9MPXVSZH"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    const loginBtn = document.getElementById("login-btn");
-    const loginOverlay = document.getElementById("login-overlay");
-    const watermark = document.querySelector(".watermark");
-    const mainContent = document.getElementById("main-content");
-    const adminTools = document.getElementById("admin-tools");
-
-    loginBtn.addEventListener("click", () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch((error) => {
-        alert("Login failed: " + error.message);
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+  // Ensure all functions are defined before calling them.
+  function startCountdown() {
+    const countdownEl = document.getElementById("countdown");
+    const targetDate = new Date("2025-07-18T00:00:00").getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const gap = targetDate - now;
+      if (gap <= 0) {
+        countdownEl.innerText = "🎉 Endsem Started!";
+        return;
+      }
+      const days = Math.floor(gap / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((gap % (1000 * 60)) / 1000);
+      countdownEl.innerText = `⏳ Time Remaining for endsem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
+  }
+  function manuallyApprove() {
+    const email = document.getElementById("manual-email").value.trim().toLowerCase();
+    if (email) {
+      db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
+        alert("✅ Approved: " + email);
+        document.getElementById("manual-email").value = "";
+        loadPendingUsers();
       });
-    });
-
-    function updateActiveStatus(user) {
-      const email = user.email.toLowerCase();
-      setInterval(() => {
-        db.collection("activeUsers").doc(email).set({
-          email,
-          lastActive: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      }, 60000);
     }
-
-    function loadActiveUsers() {
-      const list = document.getElementById("active-users-list");
-      db.collection("activeUsers").onSnapshot(snapshot => {
-        const now = Date.now();
-        list.innerHTML = "";
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const last = data.lastActive?.toDate()?.getTime() || 0;
-          if ((now - last) < 120000) {
+  }
+  function approveEmail(email) {
+    db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
+      db.collection("loginAttempts").doc(email).delete();
+      alert("✅ Approved: " + email);
+      loadPendingUsers();
+    });
+  }
+  function approvePsem1(email) {
+    db.collection("psem1").doc(email).set({ approved: true }).then(() => {
+      alert("✅ PSEM1 Approved: " + email);
+      loadPendingUsers();
+    });
+  }
+  function loadPendingUsers() {
+    const list = document.getElementById("pending-users-list");
+    list.innerHTML = "";
+    db.collection("loginAttempts").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const email = doc.id;
+        db.collection("approvedUsers").doc(email).get().then(userDoc => {
+          const isApproved = userDoc.exists;
+          db.collection("psem1").doc(email).get().then(psemDoc => {
+            const isPsem1Approved = psemDoc.exists;
             const li = document.createElement("li");
-            li.textContent = data.email;
+            let html = `<strong>${email}</strong> `;
+            if (!isApproved) {
+              html += `<button onclick="approveEmail('${email}')">✅ Approve</button> `;
+            } else {
+              html += `<span style="color: green;">✅ Approved</span> `;
+            }
+            if (!isPsem1Approved) {
+              html += `<button onclick="approvePsem1('${email}')">📘 PSEM1</button>`;
+            } else {
+              html += `<span style="color: blue;">📘 PSEM1 Approved</span>`;
+            }
+            li.innerHTML = html;
             list.appendChild(li);
-          }
+          });
         });
       });
-    }
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const email = user.email.toLowerCase();
-        watermark.innerText = `User: ${email} | Accessed: ${new Date().toISOString().split("T")[0]}`;
-        updateActiveStatus(user);
-        db.collection("approvedUsers").doc(email).get().then(doc => {
-          if (doc.exists) {
-            const role = doc.data().role;
+    });
+  }
+  function loadVisitorLog() {
+    const list = document.getElementById("visitors-log");
+    list.innerHTML = "";
+    db.collection("visitors").orderBy("timestamp", "desc").get().then((snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const time = data.timestamp?.toDate()?.toLocaleString() || "Unknown";
+        const li = document.createElement("li");
+        li.textContent = `${data.email} – ${time}`;
+        list.appendChild(li);
+      });
+    });
+  }
+  function toggleSubjects(id) {
+    const all = document.querySelectorAll("ul.subject-list");
+    const current = document.getElementById(id);
+    const alreadyOpen = current.classList.contains("open");
+    all.forEach(ul => {
+      if (ul.id.startsWith(id.split("-")[0])) {
+        ul.classList.remove("open");
+      }
+    });
+    if (!alreadyOpen) current.classList.add("open");
+  }
+  function updateActiveStatus(user) {
+    const email = user.email.toLowerCase();
+    setInterval(() => {
+      db.collection("activeUsers").doc(email).set({
+        email,
+        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    }, 60000);
+  }
+  function loadActiveUsers() {
+    const list = document.getElementById("active-users-list");
+    db.collection("activeUsers").onSnapshot(snapshot => {
+      const now = Date.now();
+      list.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const last = data.lastActive?.toDate()?.getTime() || 0;
+        if ((now - last) < 120000) {
+          const li = document.createElement("li");
+          li.textContent = data.email;
+          list.appendChild(li);
+        }
+      });
+    });
+  }
+  // Firebase SDK/Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+    authDomain: "course-app-a1d28.firebaseapp.com",
+    projectId: "course-app-a1d28",
+    storageBucket: "course-app-a1d28.appspot.com",
+    messagingSenderId: "626435621011",
+    appId: "1:626435621011:web:86fe095d0d36de609a4d66",
+    measurementId: "G-8C9MPXVSZH"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const loginBtn = document.getElementById("login-btn");
+  const loginOverlay = document.getElementById("login-overlay");
+  const watermark = document.querySelector(".watermark");
+  const mainContent = document.getElementById("main-content");
+  const adminTools = document.getElementById("admin-tools");
+  loginBtn.addEventListener("click", () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch((error) => {
+      alert("Login failed: " + error.message);
+    });
+  });
+  auth.onAuthStateChanged((user) => {
+    if (!user) return;
+    const email = user.email.toLowerCase();
+    watermark.innerText = `User: ${email} | Accessed: ${new Date().toISOString().split("T")[0]}`;
+    updateActiveStatus(user);
+    db.collection("approvedUsers").doc(email).get().then(doc => {
+      if (doc.exists) {
+        const role = doc.data().role;
+        loginOverlay.style.display = "none";
+        mainContent.style.display = "block";
+        if (role === "admin") {
+          adminTools.style.display = "block";
+          loadPendingUsers();
+          loadActiveUsers();
+          loadVisitorLog();
+        }
+      } else {
+        db.collection("loginAttempts").doc(email).set({
+          email,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        db.collection("visitors").doc(email).set({
+          email,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        db.collection("visitors").doc(email).get().then(visitorDoc => {
+          if (visitorDoc.exists) {
             loginOverlay.style.display = "none";
             mainContent.style.display = "block";
-           
-            if (role === "admin") {
-              adminTools.style.display = "block";
-              loadPendingUsers();
-              loadActiveUsers();
-            }
+            document.getElementById("home-info").style.display = "block";
+            alert("👀 Viewing in visitor mode. Limited access.");
           } else {
-            db.collection("loginAttempts").doc(email).set({
-              email: email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
             alert("🚫 Access Denied: You are not an approved user.");
             auth.signOut();
           }
         });
       }
     });
-
-    function manuallyApprove() {
-      const email = document.getElementById("manual-email").value.trim().toLowerCase();
-      if (email) {
-        db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
-          alert("✅ Approved: " + email);
-          document.getElementById("manual-email").value = "";
-          loadPendingUsers();
-        });
-      }
-    }
-
-    function approveEmail(email) {
-      db.collection("approvedUsers").doc(email).set({ role: "viewer" }).then(() => {
-        db.collection("loginAttempts").doc(email).delete();
-        alert("✅ Approved: " + email);
-        loadPendingUsers();
-      });
-    }
-
-    function loadPendingUsers() {
-      const list = document.getElementById("pending-users-list");
-      list.innerHTML = "";
-      db.collection("loginAttempts").get().then(snapshot => {
-        snapshot.forEach(doc => {
-          const email = doc.id;
-          db.collection("approvedUsers").doc(email).get().then(userDoc => {
-            if (!userDoc.exists) {
-              const li = document.createElement("li");
-              li.innerHTML = `${email} <button onclick="approveEmail('${email}')">Approve</button>`;
-              list.appendChild(li);
-            }
-          });
-        });
-      });
-    }
-
-    function toggleSubjects(id) {
-      const all = document.querySelectorAll("ul.subject-list");
-      const current = document.getElementById(id);
-      const alreadyOpen = current.classList.contains("open");
-      all.forEach(ul => {
-        if (ul.id.startsWith(id.split("-")[0])) {
-          ul.classList.remove("open");
-        }
-      });
-      if (!alreadyOpen) current.classList.add("open");
-    }
-
-    // ⏳ Countdown Timer
-    function startCountdown() {
-      const countdownEl = document.getElementById("countdown");
-      const targetDate = new Date("2025-07-18T00:00:00").getTime();
-      setInterval(() => {
-        const now = new Date().getTime();
-        const gap = targetDate - now;
-        if (gap <= 0) {
-          countdownEl.innerText = "🎉 Endsem Started!";
-          return;
-        }
-        const days = Math.floor(gap / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((gap % (1000 * 60)) / 1000);
-        countdownEl.innerText = `⏳ Time Remaining for endsem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-      }, 1000);
-    }
-    startCountdown();
-    
-  </script>
+  });
+  startCountdown();
+</script>
 </body>
 </html>
