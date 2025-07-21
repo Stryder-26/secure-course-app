@@ -638,7 +638,7 @@
 }
 
         
-    function loadPendingUsers() {
+ function loadPendingUsers() {
   const list = document.getElementById("pending-users-list");
   list.innerHTML = "";
 
@@ -671,12 +671,12 @@
 
           li.innerHTML = html;
           list.appendChild(li);
-            }
-          });
-        });
-      });
-     
-    }
+        }); // ✅ closes db.collection("psem1").doc(email).get()
+      });   // ✅ closes db.collection("approvedUsers").doc(email).get()
+    });     // ✅ closes snapshot.forEach
+  });       // ✅ closes db.collection("loginAttempts").get()
+}           // ✅ closes loadPendingUsers()
+
  function loadVisitorLog() {
   const list = document.getElementById("visitors-log");
   list.innerHTML = "";
