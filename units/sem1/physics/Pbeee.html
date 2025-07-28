@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BEEE (Basic Electrical and Electronics) – Predicted Paper</title>
+  <link rel="stylesheet" href="/secure-course-app/css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0 20px;
+      user-select: none;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .note-image {
+      display: block;
+      max-width: 100%;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      filter: blur(10px);
+      pointer-events: none;
+      transition: filter 0.3s ease;
+    }
+    .note-image.unlocked {
+      filter: none !important;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100%;
+      background: #263238;
+      color: white;
+      overflow-y: auto;
+      padding: 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 999;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .sidebar ul {
+      padding-left: 20px;
+    }
+    .sidebar ul li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    @media print {
+      body {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+
+  <!-- Sidebar toggle -->
+  <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+
+  <!-- Slide-in sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>Cheat Sheet – BEEE (Basic Electrical and Electronics)</h2>
+
+    <strong>Module 1: DC Circuits</strong>
+    <ul>
+      <li>KCL & KVL, Mesh/Node analysis</li>
+      <li>Superposition, Thevenin, Norton theorems</li>
+      <li>Star-Delta transformation</li>
+    </ul>
+
+    <strong>Module 2: AC Circuits</strong>
+    <ul>
+      <li>Phasor analysis, Impedance, RL/RC/RLC circuits</li>
+      <li>Power factor, Resonance</li>
+    </ul>
+
+    <strong>Module 3: Transformers & Machines</strong>
+    <ul>
+      <li>Single-phase transformer: working, EMF equation</li>
+      <li>DC Machines: Generator & Motor principle</li>
+      <li>Induction Motors: Principle, Applications</li>
+    </ul>
+
+    <strong>Module 4: Basic Electronics</strong>
+    <ul>
+      <li>PN Junction, Zener Diode: V-I characteristics</li>
+      <li>BJT: Configuration & regions</li>
+      <li>OPAMP: Inverting/Non-inverting, Applications</li>
+    </ul>
+
+    <strong>Module 5: Measurements & Instruments</strong>
+    <ul>
+      <li>Ammeter, Voltmeter, Wattmeter (analog & digital)</li>
+      <li>Basics of CRO</li>
+      <li>Transducers: Types & uses</li>
+    </ul>
+  </div>
+
+  <h1>BEEE (Basic Electrical and Electronics) – Predicted Paper</h1>
+
+  <!-- Notes Images -->
+  <img src="/secure-course-app/assets/crashcourse/sem1/beee/image_1.jpg" alt="BEEE Paper Page 1" class="note-image" />
+  <img src="/secure-course-app/assets/crashcourse/sem1/beee/image_2.jpg" alt="BEEE Paper Page 2" class="note-image" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+      authDomain: "course-app-a1d28.firebaseapp.com",
+      projectId: "course-app-a1d28",
+      storageBucket: "course-app-a1d28.appspot.com",
+      messagingSenderId: "626435621011",
+      appId: "1:626435621011:web:86fe095d0d36de609a4d66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email.toLowerCase();
+        // Check both collections: "approvedUsers" and "psem1"
+        Promise.any([
+          db.collection("approvedUsers").doc(email).get(),
+          db.collection("psem1").doc(email).get()
+        ]).then(doc => {
+          // If either exists, unlock notes
+          if (doc.exists) {
+            document.querySelectorAll('.note-image').forEach(img => {
+              img.classList.add('unlocked');
+            });
+          }
+        }).catch(() => {
+          // Remain locked if neither found
+        });
+      }
+    });
+  </script>
+</body>
+</html>
