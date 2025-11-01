@@ -448,6 +448,7 @@
         <h4>Manually Approve Email</h4>
         <input type="email" id="manual-email" placeholder="Enter email to approve" />
         <button onclick="manuallyApprove()">✅ Approve</button>
+        <button onclick="manuallyApproveSem3()">🔑 SEM3</button>
         <h4>Live Active Users</h4>
         <ul id="active-users-list"></ul>
         <div class="semester-block">
@@ -490,6 +491,16 @@
         alert("✅ Approved: " + email);
         document.getElementById("manual-email").value = "";
         loadPendingUsers();
+      });
+    }
+  }
+  function manuallyApproveSem3() {
+    const email = document.getElementById("manual-email").value.trim().toLowerCase();
+    if (email) {
+      db.collection("SEM3").doc(email).set({ approved: true }).then(() => {
+        alert("🔑 SEM3 Access Granted: " + email);
+        document.getElementById("manual-email").value = "";
+        loadPendingUsers(); // This reloads the pending list
       });
     }
   }
