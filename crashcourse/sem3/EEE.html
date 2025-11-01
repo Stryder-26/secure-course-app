@@ -39,6 +39,16 @@
     }
     .iframe-container {
       position: relative;
+      /* Blur the content by default */
+      filter: blur(10px);
+      transition: filter 0.3s ease;
+      /* Prevent clicking on the blurred content */
+      pointer-events: none;
+    }
+    .iframe-container.unlocked {
+      /* This class removes the blur */
+      filter: none;
+      pointer-events: auto;
     }
     .sidebar {
       position: fixed;
@@ -163,15 +173,26 @@
     auth.onAuthStateChanged((user) => {
       if (user) {
         const email = user.email.toLowerCase();
-        // This line is now updated to use the "SEM3" collection
+
+        // Check if the user is in the "SEM3" collection
         db.collection("SEM3").doc(email).get().then(doc => {
           if (doc.exists) {
-            document.querySelectorAll('.note-image').forEach(img => {
-              img.classList.add('unlocked');
+            
+            // If they exist, find the container and add the "unlocked" class
+            document.querySelector('.iframe-container').classList.add('unlocked');
+
+          } else {
+            // (Optional) Also check "approvedUsers" (for admins)
+            db.collection("approvedUsers").doc(email).get().then(adminDoc => {
+              if (adminDoc.exists) {
+                document.querySelector('.iframe-container').classList.add('unlocked');
+              }
             });
           }
         });
       }
+      // If 'user' is null (not logged in), nothing happens, 
+      // and the content stays blurred.
     });
   </script>
 </body>
