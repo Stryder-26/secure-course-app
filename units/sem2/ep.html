@@ -37,6 +37,9 @@
       background: transparent;
       z-index: 2;
     }
+    .iframe-container {
+      position: relative;
+    }
     .sidebar {
       position: fixed;
       top: 0;
@@ -125,10 +128,10 @@
 
   <h1>Engineering Physics – Notes</h1>
 
-  <div class="iframe-overlay"></div>
-
-  <iframe src="https://drive.google.com/file/d/10gj5hHwKLSn8LkKpZ3poJW1ZOQM8Do5P/preview" allow="autoplay"></iframe>
-
+  <div class="iframe-container">
+    <div class="iframe-overlay"></div>
+    <iframe src="https://drive.google.com/file/d/10gj5hHwKLSn8LkKpZ3poJW1ZOQM8Do5P/preview" allow="autoplay"></iframe>
+  </div>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
