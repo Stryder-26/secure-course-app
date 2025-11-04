@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CS302 Discrete Structure – Crash Course</title>
+  <link rel="stylesheet" href="../../../css/style.css" />
+  <style>
+    /* --- Main Page Styles --- */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      /* UPDATED: Enabled scrolling */
+      overflow-y: auto;
+    }
+    h1 {
+      text-align: center;
+      margin: 0;
+      padding: 15px 0;
+      background-color: #2c3e50;
+      color: white;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      /* UPDATED: Set to 80% of viewport height */
+      height: 80vh; 
+      border: none;
+      position: relative;
+      z-index: 1;
+    }
+    .iframe-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 55px;
+      background: transparent;
+      z-index: 2;
+    }
+    .iframe-container {
+      position: relative;
+      /* Blur the content by default */
+      filter: blur(10px);
+      transition: filter 0.3s ease;
+      /* Prevent clicking on the blurred content */
+      pointer-events: none;
+    }
+    .iframe-container.unlocked {
+      /* This class removes the blur */
+      filter: none;
+      pointer-events: auto;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100%;
+      background: #263238;
+      color: white;
+      overflow-y: auto;
+      padding: 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 999;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .sidebar ul {
+      padding-left: 20px;
+    }
+    .sidebar ul li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    @media print {
+      body {
+        display: none;
+      }
+    }
+    
+    /* --- NEW: Styles from Prediction Paper --- */
+    
+    /* Ensure * doesn't reset main page */
+    .page-content * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .page-content {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+    }
+    
+    .page {
+        background: white;
+        margin: 0 auto 20px;
+        padding: 25px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        page-break-after: always;
+    }
+    
+    /* Scoped h1, h2, h3 to .page */
+    .page h1, .page h2, .page h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    
+    .page h1 {
+        font-size: 28px;
+        text-align: center;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .page h2 {
+        font-size: 22px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 8px;
+        margin-top: 20px;
+    }
+    
+    /* Priority-specific styles */
+    .priority-critical {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .priority-high {
+        background: linear-gradient(135deg, #ffa726, #ff9800);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    .priority-medium {
+        background: linear-gradient(135deg, #42a5f5, #2196f3);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    .priority-low {
+        background: linear-gradient(135deg, #66bb6a, #4caf50);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    /* Question list styles with priority colors */
+    .question-list {
+        margin: 15px 0;
+    }
+    
+    .question-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border-left: 5px solid #bdc3c7;
+        transition: all 0.3s ease;
+    }
+    
+    .question-item:hover {
+        transform: translateX(5px);
+    }
+    
+    .question-critical {
+        background-color: #ffebee;
+        border-left-color: #e53935;
+        box-shadow: 0 2px 8px rgba(229, 57, 53, 0.15);
+    }
+    
+    .question-high {
+        background-color: #fff3e0;
+        border-left-color: #ff9800;
+    }
+    
+    .question-medium {
+        background-color: #e3f2fd;
+        border-left-color: #2196f3;
+    }
+    
+    .question-low {
+        background-color: #e8f5e9;
+        border-left-color: #4caf50;
+    }
+    
+    .question-number {
+        font-weight: bold;
+        margin-right: 8px;
+        background: #2c3e50;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        min-width: 25px;
+        text-align: center;
+    }
+    
+    /* Priority legend */
+    .priority-legend {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+    
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        margin-right: 8px;
+    }
+    
+    .legend-critical { background-color: #ffebee; border-left: 4px solid #e53935; }
+    .legend-high { background-color: #fff3e0; border-left: 4px solid #ff9800; }
+    .legend-medium { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
+    .legend-low { background-color: #e8f5e9; border-left: 4px solid #4caf50; }
+    
+    /* Icon styles */
+    .priority-icon {
+        margin-right: 8px;
+        font-weight: bold;
+    }
+    
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+    
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #3498db;
+        color: white;
+        font-weight: 600;
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        font-size: 14px;
+        color: #7f8c8d;
+    }
+    
+  </style>
+</head>
+<body oncontextmenu="return false">
+  <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Cheat Sheet – CS 302</h2>
+    <strong>Module 1: Set Theory & Logic</strong>
+    <ul>
+      <li>Set Operations, Venn Diagrams</li>
+      <li>Propositional Logic, Truth Tables</li>
+      <li>Predicate Logic & Quantifiers</li>
+      <li>Laws of Logic (De Morgan's, etc.)</li>
+    </ul>
+    <strong>Module 2: Relations & Functions</strong>
+    <ul>
+      <li>Types of Relations (Equivalence, Partial Order)</li>
+      <li>Closures of Relations</li>
+      <li>Types of Functions (Injective, Surjective, Bijective)</li>
+      <li>Pigeonhole Principle</li>
+    </ul>
+    <strong>Module 3: Algebraic Structures</strong>
+    <ul>
+      <li>Groups, Subgroups, Cyclic Groups</li>
+      <li>Rings, Fields</li>
+      <li>Homomorphism & Isomorphism</li>
+      <li>Lattices & Boolean Algebra</li>
+    </ul>
+    <strong>Module 4: Graph Theory</strong>
+    <ul>
+      <li>Graph Types, Paths, Circuits (Euler, Hamil.)</li>
+      <li>Graph Traversal (DFS, BFS)</li>
+      <li>Spanning Trees (Prim's, Kruskal's)</li>
+      <li>Planar Graphs & Coloring</li>
+    </ul>
+    <strong>Module 5: Combinatorics</strong>
+    <ul>
+      <li>Permutations & Combinations</li>
+      <li>Binomial Theorem</li>
+      <li>Recurrence Relations</li>
+      <li>Generating Functions</li>
+    </ul>
+  </div>
+
+  <h1>CS302 Discrete Structure – Crash Course</h1>
+
+  <div class="iframe-container">
+    <div class="iframe-overlay"></div>
+    <iframe src="https://drive.google.com/file/d/1CaXs9oXNRW79LHr4aUqTCDK7XScFMssq/preview" allow="autoplay"></iframe>
+  </div>
+  
+
+  <div class="page-content">
+    <div class="page">
+        <h1>CS-302 Discrete Structure</h1>
+        <h2>Priority-Based Question Bank</h2>
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <div style="font-size: 18px; color: #7f8c8d; margin-bottom: 30px;">
+                Color-Coded Priority System<br>
+                Focus on what matters most for exams
+            </div>
+        </div>
+        
+        <div class="priority-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-critical"></div>
+                <span>Critical Priority (Must Prepare)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-high"></div>
+                <span>High Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-medium"></div>
+                <span>Medium Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-low"></div>
+                <span>Low Priority</span>
+            </div>
+        </div>
+        
+        <div style="background: #ecf0f1; padding: 20px; border-radius: 5px; margin: 30px 0;">
+            <h3>Priority Guide</h3>
+            <ul style="margin-left: 20px;">
+                <li><span class="priority-critical">CRITICAL</span> - Appears in 80%+ of exams</li>
+                <li><span class="priority-high">HIGH</span> - Appears in 50-80% of exams</li>
+                <li><span class="priority-medium">MEDIUM</span> - Appears in 30-50% of exams</li>
+                <li><span class="priority-low">LOW</span> - Appears in less than 30% of exams</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Color-coded priority system for efficient exam preparation</p>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Unit 1: Set Theory</h1>
+        <h2>Priority-Based Question Bank</h2>
+        
+        <div class="priority-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-critical"></div>
+                <span>Critical Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-high"></div>
+                <span>High Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-medium"></div>
+                <span>Medium Priority</span>
+            </div>
+        </div>
+        
+        <div class="question-list">
+            <div class="question-item question-critical">
+                <span class="question-number">1</span>
+                Prove that (A ∪ B)' = A' ∩ B' and (A ∩ B)' = A' ∪ B'
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-critical">
+                <span class="question-number">2</span>
+                Prove that A – (B ∪ C) = (A – B) ∩ (A – C)
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">3</span>
+                Define a set. Explain the concept of countable and uncountable sets with examples
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">4</span>
+                Prove that A ∪ (A ∩ B) = A
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">5</span>
+                Illustrate A ∩ (B ∪ C)' using a Venn diagram
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">6</span>
+                Using Venn diagrams, verify (A ∪ B) – C = (A – C) ∪ (B – C)
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">7</span>
+                Define subset, proper subset, and universal set with examples
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">8</span>
+                Define power set and give an example
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">9</span>
+                Prove general set identities using membership tables
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">10</span>
+                Differentiate between finite and infinite sets
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">11</span>
+                Prove that if A ⊆ B and B ⊆ C, then A ⊆ C
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">12</span>
+                Show that the set of integers is countable
+                <span class="priority-low">LOW</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Focus on <span style="color: #e53935;">CRITICAL</span> and <span style="color: #ff9800;">HIGH</span> priority questions first</p>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Unit 2: Relations</h1>
+        <h2>Priority-Based Question Bank</h2>
+        
+        <div class="priority-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-critical"></div>
+                <span>Critical Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-high"></div>
+                <span>High Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-medium"></div>
+                <span>Medium Priority</span>
+            </div>
+        </div>
+        
+        <div class="question-list">
+            <div class="question-item question-critical">
+                <span class="question-number">1</span>
+                Show that the relation R = {(a,b): a – b is a multiple of 3} on Z is an equivalence relation
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-critical">
+                <span class="question-number">2</span>
+                Show that the relation R = {(x,y): x and y have equal length} is an equivalence relation
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">3</span>
+                Define relation and represent it pictorially using an example
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">4</span>
+                Define partial ordering relation. Give one example from the real world
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">5</span>
+                Draw the Hasse diagram for the set of positive divisors of 36 under divisibility
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">6</span>
+                Explain composition of relations with an example
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">7</span>
+                Define inverse relation and give an example
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">8</span>
+                Define reflexive, symmetric, and transitive relations
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">9</span>
+                Represent a job-scheduling problem as a partial order and draw its Hasse diagram
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">10</span>
+                Find S∘R for given relations R and S and represent it graphically
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">11</span>
+                Prove that if R is symmetric, then R⁻¹ is also symmetric
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">12</span>
+                Show that the relation "is a sibling of" is an equivalence relation
+                <span class="priority-low">LOW</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Equivalence relation proofs are <span style="color: #e53935;">CRITICAL</span> for exams</p>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Unit 3: Functions</h1>
+        <h2>Priority-Based Question Bank</h2>
+        
+        <div class="priority-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-critical"></div>
+                <span>Critical Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-high"></div>
+                <span>High Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-medium"></div>
+                <span>Medium Priority</span>
+            </div>
+        </div>
+        
+        <div class="question-list">
+            <div class="question-item question-critical">
+                <span class="question-number">1</span>
+                Given f(x) = x + 1 and g(x) = x² + 2, find (g∘f)(x) and (f∘g)(x)
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-critical">
+                <span class="question-number">2</span>
+                Explain the pigeonhole principle with at least one numerical example
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">3</span>
+                Define a function. Distinguish between one-one, onto, into, and many-one functions
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">4</span>
+                Find the inverse of the function f(x) = (3x – 2) / (x + 1), if it exists
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">5</span>
+                Prove that the composition of two bijective functions is bijective
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">6</span>
+                Define recursive functions and give one example
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">7</span>
+                Define composition of functions with an example
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">8</span>
+                If f and g are functions such that g(f(x)) = x, show that f and g are inverses
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">9</span>
+                State the properties of inverse functions
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">10</span>
+                Discuss the role of functions in discrete mathematics
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">11</span>
+                Prove that if f is bijective, then f⁻¹ is also bijective
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">12</span>
+                Show that the function f(x) = x³ is one-one and onto from R to R
+                <span class="priority-low">LOW</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Function composition and pigeonhole principle are <span style="color: #e53935;">CRITICAL</span></p>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Unit 4: Theorem Proving Techniques</h1>
+        <h2>Priority-Based Question Bank</h2>
+        
+        <div class="priority-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-critical"></div>
+                <span>Critical Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-high"></div>
+                <span>High Priority</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-medium"></div>
+                <span>Medium Priority</span>
+            </div>
+        </div>
+        
+        <div class="question-list">
+            <div class="question-item question-critical">
+                <span class="question-number">1</span>
+                Prove by mathematical induction that 1² + 2² + … + n² = n(n+1)(2n+1)/6
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-critical">
+                <span class="question-number">2</span>
+                Prove ((p→(q→r))→((p→q)→(p→r))) is a tautology
+                <span class="priority-critical">CRITICAL</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">3</span>
+                Prove by induction that n³ + 2n is divisible by 3 for all n ∈ N
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">4</span>
+                Use proof by contradiction to show √2 is irrational
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-high">
+                <span class="question-number">5</span>
+                Show that (p ∨ q) ∧ (~p) ∧ (~q) is a contradiction
+                <span class="priority-high">HIGH</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">6</span>
+                Prove by induction that 1·1! + 2·2! + 3·3! + … + n·n! = (n+1)! – 1
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">7</span>
+                Use contradiction to prove there are infinitely many prime numbers
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">8</span>
+                Prove that if n² is even, then n is even (by contrapositive)
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-medium">
+                <span class="question-number">9</span>
+                Prove that the sum of two odd integers is even
+                <span class="priority-medium">MEDIUM</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">10</span>
+                Establish the validity of the argument: "If it rains, the match will be cancelled..."
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">11</span>
+                Prove by induction that 2ⁿ > n for all natural numbers n
+                <span class="priority-low">LOW</span>
+            </div>
+            <div class="question-item question-low">
+                <span class="question-number">12</span>
+                Prove that the product of two consecutive integers is even
+                <span class="priority-low">LOW</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Mathematical induction and tautology proofs are <span style="color: #e53935;">CRITICAL</span></T>
+        </div>
+    </div>
+
+    <div class="page">
+        <h1>Final Priority Summary</h1>
+        <h2>Exam Preparation Strategy</h2>
+        
+        <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #ff9800;">
+            <h3 style="color: #e65100;">🔄 Study Sequence Recommendation</h3>
+            <ol style="margin-left: 20px; margin-top: 15px;">
+                <li><strong>First Pass:</strong> All <span class="priority-critical">CRITICAL</span> priority questions (Guaranteed marks)</li>
+                <li><strong>Second Pass:</strong> All <span class="priority-high">HIGH</span> priority questions (High probability)</li>
+                <li><strong>Third Pass:</strong> Selective <span class="priority-medium">MEDIUM</span> priority questions (Based on time)</li>
+                <li><strong>If Time:</strong> <span class="priority-low">LOW</span> priority questions (Extra preparation)</li>
+            </ol>
+        </div>
+        
+        <h3>📊 Priority Distribution Across Units</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Unit</th>
+                    <th>Critical</th>
+                    <th>High</th>
+                    <th>Medium</th>
+                    <th>Low</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Set Theory</td>
+                    <td style="color: #e53935;">2</td>
+                    <td style="color: #ff9800;">3</td>
+                    <td style="color: #2196f3;">4</td>
+                    <td style="color: #4caf50;">3</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>Relations</td>
+                    <td style="color: #e53935;">2</td>
+                    <td style="color: #ff9800;">3</td>
+                    <td style="color: #2196f3;">4</td>
+                    <td style="color: #4caf50;">3</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>Functions</td>
+                    <td style="color: #e53935;">2</td>
+                    <td style="color: #ff9800;">3</td>
+                    <td style="color: #2196f3;">4</td>
+                    <td style="color: #4caf50;">3</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>Theorem Proving</td>
+                    <td style="color: #e53935;">2</td>
+                    <td style="color: #ff9800;">3</td>
+                    <td style="color: #2196f3;">4</td>
+                    <td style="color: #4caf50;">3</td>
+                    <td>12</td>
+                </tr>
+                <tr style="font-weight: bold; background: #f5f5f5;">
+                    <td>Total</td>
+                    <td style="color: #e53935;">8</td>
+                    <td style="color: #ff9800;">12</td>
+                    <td style="color: #2196f3;">16</td>
+                    <td style="color: #4caf50;">12</td>
+                    <td>48</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>🎯 Critical Priority Questions (Must Prepare)</h3>
+        <div class="question-list">
+            <div class="question-item question-critical">
+                <strong>Set Theory:</strong> Prove that (A ∪ B)' = A' ∩ B' and Prove that A – (B ∪ C) = (A – B) ∩ (A – C)
+            </div>
+            <div class="question-item question-critical">
+                <strong>Relations:</strong> Show equivalence relations for (a-b multiple of 3) and (equal string length)
+            </div>
+            <div class="question-item question-critical">
+                <strong>Functions:</strong> Function composition and Pigeonhole principle applications
+            </div>
+            <div class="question-item question-critical">
+                <strong>Theorem Proving:</strong> Mathematical induction (series sum) and Tautology proof
+            </div>
+        </div>
+        
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 5px; margin-top: 20px;">
+            <h3 style="color: #2e7d32;">✅ Success Strategy</h3>
+            <p>Mastering just the <span class="priority-critical">8 CRITICAL</span> and <span class="priority-high">12 HIGH</span> priority questions (20 total) will cover ~80% of expected exam content.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Color-coded priority system for efficient exam preparation</p>
+        </div>
+    </div>
+  </div> <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+      authDomain: "course-app-a1d28.firebaseapp.com",
+      projectId: "course-app-a1d28",
+      storageBucket: "course-app-a1d28.appspot.com",
+      messagingSenderId: "626435621011",
+      appId: "1:626435621011:web:86fe095d0d36de609a4d66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email.toLowerCase();
+
+        // Check if the user is in the "SEM3" collection
+        db.collection("SEM3").doc(email).get().then(doc => {
+          if (doc.exists) {
+            
+            // If they exist, find the container and add the "unlocked" class
+            document.querySelector('.iframe-container').classList.add('unlocked');
+
+          } else {
+            // (Optional) Also check "approvedUsers" (for admins)
+            db.collection("approvedUsers").doc(email).get().then(adminDoc => {
+              if (adminDoc.exists) {
+                document.querySelector('.iframe-container').classList.add('unlocked');
+              }
+            });
+          }
+        });
+      }
+      // If 'user' is null (not logged in), nothing happens, 
+      // and the content stays blurred.
+    });
+  </script>
+</body>
+</html>
