@@ -601,19 +601,29 @@
       if (user) {
         const email = user.email.toLowerCase();
 
-        // UPDATED: Check ONLY the "SEM3" collection
+        // Check if the user is in the "SEM3" collection first
         db.collection("SEM3").doc(email).get().then(doc => {
           if (doc.exists) {
             
-            // If they exist, UNLOCK THE ENTIRE PAGE
+            // If they exist in SEM3, unlock the page
             document.getElementById('locked-content').classList.add('unlocked');
+
+          } else {
+            
+            // If NOT in SEM3, check if they are an admin
+            db.collection("approvedUsers").doc(email).get().then(adminDoc => {
+              if (adminDoc.exists) {
+                
+                // If they are an admin, unlock the page
+                document.getElementById('locked-content').classList.add('unlocked');
+              }
+            });
+            // If they are in neither, the page stays locked.
           }
-          // No 'else' check for other users.
-          // If not in SEM3, the page remains locked and blurred.
         });
       }
-      // If 'user' is null (not logged in), nothing happens, 
-      // and the ENTIRE PAGE stays blurred.
+      // If the user is not logged in, nothing happens.
+      // The page stays locked.
     });
   </script>
 </body>
