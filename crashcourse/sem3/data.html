@@ -11,7 +11,11 @@
       background-color: #f3f4f6;
       margin: 0;
       padding: 0;
+      /* Disables selection on the main page body */
       user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       /* Enabled scrolling */
       overflow-y: auto;
     }
@@ -25,39 +29,53 @@
     iframe {
       display: block;
       width: 100%;
-      /* Set to 80% of viewport height */
       height: 80vh; 
       border: none;
       position: relative;
       z-index: 1;
     }
-    .iframe-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 55px;
-      background: transparent;
-      z-index: 2;
-    }
-    .iframe-container {
-      position: relative;
-    }
-
-    /* --- NEW BLUR LOGIC --- */
+    
+    /* --- FULL PAGE SECURITY --- */
+    
+    /* This wrapper holds ALL secure content */
     #locked-content {
       /* Blur the content by default */
       filter: blur(10px);
       transition: filter 0.3s ease;
-      /* Prevent clicking on the blurred content */
+      /* Prevent ALL mouse interaction when locked */
       pointer-events: none;
     }
     #locked-content.unlocked {
       /* This class removes the blur */
       filter: none;
+      /* Re-enables mouse interaction for the page */
       pointer-events: auto;
     }
 
+    /* --- IFRAME SECURITY (THE FIX) --- */
+    
+    .iframe-container {
+      position: relative;
+    }
+    
+    /* This single overlay sits on top of the *entire* iframe */
+    /* It blocks the header, right-clicks, and all text selection */
+    .iframe-blocker-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%; /* Covers the whole iframe */
+      z-index: 2; /* Sits on top of the iframe */
+      background: transparent;
+    }
+    
+    /* We hide the blocker *only* if the page is unlocked */
+    /* NOTE: This re-enables scrolling, but the *body* and Google Drive settings should be your primary defense */
+    #locked-content.unlocked .iframe-blocker-overlay {
+       display: none;
+    }
+    
     /* --- Sidebar Styles --- */
     .sidebar {
       position: fixed;
@@ -100,7 +118,14 @@
       z-index: 1000;
     }
     
-    /* --- NEW: Styles from CS-303 Prediction Paper --- */
+    /* --- Print Security --- */
+    @media print {
+      body {
+        display: none !important;
+      }
+    }
+    
+    /* --- Styles from CS-303 Prediction Paper --- */
     .page-content * {
         margin: 0;
         padding: 0;
@@ -218,14 +243,10 @@
         text-align: center; margin-top: 30px; padding-top: 15px;
         border-top: 1px solid #ddd; font-size: 14px; color: #7f8c8d;
     }
-    
-    @media print {
-      body { background: white; padding: 0; }
-      .page { box-shadow: none; margin: 0; padding: 15mm; }
-    }
   </style>
 </head>
-<body oncontextmenu="return false">
+<body oncontextmenu="return false;" ondragstart="return false;" oncopy="return false;" onselectstart="return false;">
+  
   <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
 
   <div class="sidebar" id="sidebar">
@@ -270,7 +291,8 @@
     <h1>CS303 Data Structures – Crash Course</h1>
 
     <div class="iframe-container">
-      <div class="iframe-overlay"></div>
+      <div class="iframe-blocker-overlay"></div>
+      
       <iframe src="https://drive.google.com/file/d/1-4_3AKpN7YLNmK3TBXCdpJohMfr5ZOvM/preview" allow="autoplay"></iframe>
     </div>
     
@@ -434,68 +456,6 @@
               <h1>Unit 4: Graphs & Advanced Trees</h1>
               <p>EXTREME PRIORITY - Appears in 7/7 Papers (~2 Questions)</p>
           </div>
-          <div class="question-list">
-              <div class="question-item question-extreme">
-                  <span class="question-number">1</span>
-                  Explain Breadth First Search (BFS) algorithm with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">2</span>
-                  Explain Depth First Search (DFS) algorithm with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">3</span>
-                  Differentiate between BFS and DFS traversal techniques
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">4</span>
-                  Explain Prim's algorithm for Minimum Spanning Tree with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">5</span>
-                  Explain Kruskal's algorithm for Minimum Spanning Tree with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">6</span>
-                  Differentiate between Prim's and Kruskal's algorithms
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">7</span>
-                  Explain AVL trees with insertion and deletion operations
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">8</span>
-                  Explain B-Trees with insertion and deletion operations
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">9</span>
-                  Write short notes on Red-Black trees
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">10</span>
-                  Define graph and explain different types of graphs
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">11</span>
-                  Explain graph representation methods (Adjacency Matrix, List)
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">12</span>
-                  Write short notes on applications of graphs
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-          </div>
           <div class="footer">
               <p>This unit is <span style="color: #c62828;">GUARANTEED</span> to appear in your exam</p>
           </div>
@@ -505,68 +465,6 @@
           <div class="unit-header">
               <h1>Unit 5: Sorting, Searching & Hashing</h1>
               <p>EXTREME PRIORITY - Appears in 7/7 Papers (~2 Questions)</p>
-          </div>
-          <div class="question-list">
-              <div class="question-item question-extreme">
-                  <span class="question-number">1</span>
-                  Explain Quick Sort algorithm with example and complexity analysis
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">2</span>
-                  Explain Bubble Sort algorithm with example and complexity
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">3</span>
-                  Explain Merge Sort algorithm with example and complexity
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">4</span>
-                  Compare different sorting algorithms (time/space complexity)
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">5</span>
-                  Explain Binary Search algorithm with example and complexity
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">6</span>
-                  Explain different hashing techniques and hash functions
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">7</span>
-                  Explain collision resolution techniques in hashing
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">8</span>
-                  Differentiate between linear probing and separate chaining
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">9</span>
-                  Explain Sequential Search algorithm with complexity
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">10</span>
-                  Write short notes on Shell Sort algorithm
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">11</span>
-                  Explain Selection Sort algorithm with example
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">12</span>
-                  Write short notes on applications of sorting and searching
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
           </div>
           <div class="footer">
               <p>This unit is <span style="color: #e53935;">GUARANTEED</span> to appear in your exam</p>
@@ -578,68 +476,6 @@
               <h1>Unit 3: Trees</h1>
               <p>VERY HIGH PRIORITY - Appears in 7/7 Papers (1-2 Questions)</p>
           </div>
-          <div class="question-list">
-              <div class="question-item question-extreme">
-                  <span class="question-number">1</span>
-                  Explain Binary Search Tree (BST) insertion operation with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">2</span>
-                  Explain Binary Search Tree (BST) deletion operation with example
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">3</span>
-                  Explain tree traversal methods: Inorder, Preorder, Postorder
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-extreme">
-                  <span class="question-number">4</span>
-                  Construct BST from given sequence of elements
-                  <span class="priority-extreme">EXTREME</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">5</span>
-                  Construct binary tree from given traversal sequences
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">6</span>
-                  Differentiate between binary tree and binary search tree
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">7</span>
-                  Write short notes on threaded binary trees
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">8</span>
-                  Explain expression trees with example
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">9</span>
-                  Define tree and explain basic tree terminology
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">10</span>
-                  Write short notes on applications of trees
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">11</span>
-                  Explain heap data structure and its operations
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">12</span>
-                  Differentiate between complete and full binary trees
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-          </div>
           <div class="footer">
               <p>BST operations appear in <span style="color: #c62828;">100%</span> of exam papers</p>
           </div>
@@ -650,68 +486,6 @@
               <h1>Unit 2: Stacks, Queues & Recursion</h1>
               <p>VERY HIGH PRIORITY - Appears in 6/7 Papers (1-2 Questions)</p>
           </div>
-          <div class="question-list">
-              <div class="question-item question-very-high">
-                  <span class="question-number">1</span>
-                  Explain Infix to Postfix conversion algorithm with example
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-very-high">
-                  <span class="question-number">2</span>
-                  Write algorithm for evaluation of postfix expression
-                  <span class="priority-very-high">VERY HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">3</span>
-                  Explain stack operations (Push, Pop) with algorithms
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">4</span>
-                  Explain queue operations (Enqueue, Dequeue) with algorithms
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">5</span>
-                  Differentiate between stack and queue data structures
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">6</span>
-                  Explain circular queue implementation with example
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">7</span>
-                  Explain priority queue with implementation
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">8</span>
-                  Write short notes on applications of stacks
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">9</span>
-                  Write short notes on applications of queues
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">10</span>
-                  Explain recursion with examples (Factorial, Fibonacci)
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">11</span>
-                  Explain Tower of Hanoi problem using recursion
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">12</span>
-                  Differentiate between recursion and iteration
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-          </div>
           <div class="footer">
               <p>Infix to Postfix appears in <span style="color: #e53935;">6 out of 7</span> exam papers</p>
           </div>
@@ -721,68 +495,6 @@
           <div class="unit-header">
               <h1>Unit 1: Introduction, Arrays & Linked Lists</h1>
               <p>HIGH PRIORITY - Appears in 5/7 Papers (~1 Question)</p>
-          </div>
-          <div class="question-list">
-              <div class="question-item question-high">
-                  <span class="question-number">1</span>
-                  Explain circular linked list operations with algorithms
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">2</span>
-                  Explain doubly linked list operations with algorithms
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">3</span>
-                  Differentiate between array and linked list
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">4</span>
-                  Write algorithm for insertion in singly linked list
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-high">
-                  <span class="question-number">5</span>
-                  Write algorithm for deletion in singly linked list
-                  <span class="priority-high">HIGH</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">6</span>
-                  Define data structure and classify different types
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">7</span>
-                  Explain Abstract Data Type (ADT) with examples
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">8</span>
-                  Explain memory representation of linked list
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">9</span>
-                  Write short notes on applications of linked lists
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">10</span>
-                  Explain polynomial manipulation using linked lists
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">11</span>
-                  Explain array operations (insertion, deletion, traversal)
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
-              <div class="question-item question-medium">
-                  <span class="question-number">12</span>
-                  Differentiate between linear and non-linear data structures
-                  <span class="priority-medium">MEDIUM</span>
-              </div>
           </div>
           <div class="footer">
               <p>This unit appears in <span style="color: #ff9800;">~70%</span> of exam papers</p>
@@ -889,22 +601,15 @@
       if (user) {
         const email = user.email.toLowerCase();
 
-        // Check if the user is in the "SEM3" collection
+        // UPDATED: Check ONLY the "SEM3" collection
         db.collection("SEM3").doc(email).get().then(doc => {
           if (doc.exists) {
             
             // If they exist, UNLOCK THE ENTIRE PAGE
             document.getElementById('locked-content').classList.add('unlocked');
-
-          } else {
-            // (Optional) Also check "approvedUsers" (for admins)
-            db.collection("approvedUsers").doc(email).get().then(adminDoc => {
-              if (adminDoc.exists) {
-                // If they are an admin, UNLOCK THE ENTIRE PAGE
-                document.getElementById('locked-content').classList.add('unlocked');
-              }
-            });
           }
+          // No 'else' check for other users.
+          // If not in SEM3, the page remains locked and blurred.
         });
       }
       // If 'user' is null (not logged in), nothing happens, 
