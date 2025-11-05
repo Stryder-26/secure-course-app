@@ -63,20 +63,31 @@
       position: relative;
     }
     
-    /* This single overlay sits on top of the *entire* iframe */
-    /* It blocks the header, right-clicks, and all text selection */
-    .iframe-blocker-overlay {
+    /* This is the 55px overlay for the HEADER */
+    /* It NEVER hides and always blocks the pop-out button */
+    .iframe-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%; /* Covers the whole iframe */
-      z-index: 2; /* Sits on top of the iframe */
+      height: 55px; /* The 55px we used before */
+      z-index: 3; /* Sits on top of everything */
+      background: transparent;
+    }
+
+    /* This overlay blocks the CONTENT (right-clicks, copy) */
+    .iframe-blocker-overlay {
+      position: absolute;
+      top: 55px;  /* Starts *after* the header overlay */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2; /* Sits on top of the iframe, but below the header block */
       background: transparent;
     }
     
-    /* We hide the blocker *only* if the page is unlocked */
-    /* NOTE: This re-enables scrolling, but the *body* and Google Drive settings should be your primary defense */
+    /* When unlocked, we HIDE the CONTENT blocker to allow scrolling */
+    /* But the 55px .iframe-overlay STAYS, protecting the button */
     #locked-content.unlocked .iframe-blocker-overlay {
        display: none;
     }
@@ -296,6 +307,8 @@
     <h1>CS303 Data Structures – Crash Course</h1>
 
     <div class="iframe-container">
+      <div class="iframe-overlay"></div> 
+      
       <div class="iframe-blocker-overlay"></div>
       
       <iframe src="https://drive.google.com/file/d/1-4_3AKpN7YLNmK3TBXCdpJohMfr5ZOvM/preview" allow="autoplay"></iframe>
