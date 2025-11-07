@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CS304 OOPS – Crash Course</title>
+
+  <meta property="og:title" content="CS304 OOPS – Crash Course" />
+  <meta property="og:description" content="Priority-Based Question Bank & Exam Blueprint for CS-304." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stryder-26.github.io/secure-course-app/crashcourse/sem3/oops.html" />
+  
+  <link rel="stylesheet" href="../../../css/style.css" />
+  <style>
+    /* --- Main Page Styles --- */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      /* Disables selection on the main page body */
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      /* Enabled scrolling */
+      overflow-y: auto;
+    }
+    h1 {
+      text-align: center;
+      margin: 0;
+      padding: 15px 0;
+      background-color: #2c3e50;
+      color: white;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 80vh; 
+      border: none;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* --- FULL PAGE SECURITY --- */
+    
+    /* This wrapper holds ALL secure content */
+    #locked-content {
+      /* Blur the content by default */
+      filter: blur(10px);
+      transition: filter 0.3s ease;
+      /* Prevent ALL mouse interaction when locked */
+      pointer-events: none;
+    }
+    #locked-content.unlocked {
+      /* This class removes the blur */
+      filter: none;
+      /* Re-enables mouse interaction for the page */
+      pointer-events: auto;
+    }
+
+    /* --- IFRAME SECURITY (THE FIX) --- */
+    
+    .iframe-container {
+      position: relative;
+    }
+    
+    /* This is the 55px overlay for the HEADER */
+    /* It NEVER hides and always blocks the pop-out button */
+    .iframe-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 55px; /* The 55px we used before */
+      z-index: 3; /* Sits on top of everything */
+      background: transparent;
+    }
+
+    /* This overlay blocks the CONTENT (right-clicks, copy) */
+    .iframe-blocker-overlay {
+      position: absolute;
+      top: 55px;  /* Starts *after* the header overlay */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2; /* Sits on top of the iframe, but below the header block */
+      background: transparent;
+    }
+    
+    /* When unlocked, we HIDE the CONTENT blocker to allow scrolling */
+    #locked-content.unlocked .iframe-blocker-overlay {
+       display: none;
+    }
+    
+    /* --- Sidebar Styles --- */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100%;
+      background: #263238;
+      color: white;
+      overflow-y: auto;
+      padding: 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 999;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .sidebar ul {
+      padding-left: 20px;
+    }
+    .sidebar ul li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    
+    /* --- Print Security --- */
+    @media print {
+      body {
+        display: none !important;
+      }
+    }
+    
+    /* --- Styles from Prediction Paper --- */
+    .page-content * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .page-content {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+    }
+    
+    .page {
+        background: white;
+        margin: 0 auto 20px;
+        padding: 25px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        page-break-after: always;
+    }
+    
+    .page h1, .page h2, .page h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    
+    .page h1 {
+        font-size: 28px;
+        text-align: center;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .page h2 {
+        font-size: 22px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 8px;
+        margin-top: 20px;
+    }
+    
+    /* ... All other .priority, .question, .table styles ... */
+    
+    .priority-extreme {
+        background: linear-gradient(135deg, #e53935, #c62828);
+        color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+        font-weight: bold; display: inline-block; margin-left: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .priority-very-high {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+        font-weight: bold; display: inline-block; margin-left: 10px;
+    }
+    .priority-high {
+        background: linear-gradient(135deg, #ffa726, #ff9800);
+        color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+        font-weight: bold; display: inline-block; margin-left: 10px;
+    }
+    .priority-medium {
+        background: linear-gradient(135deg, #42a5f5, #2196f3);
+        color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+        font-weight: bold; display: inline-block; margin-left: 10px;
+    }
+    .question-list { margin: 15px 0; }
+    .question-item {
+        padding: 12px 15px; margin-bottom: 8px; border-radius: 8px;
+        border-left: 5px solid #bdc3c7; transition: all 0.3s ease;
+    }
+    .question-item:hover { transform: translateX(5px); }
+    .question-extreme {
+        background-color: #ffebee; border-left-color: #c62828;
+        box-shadow: 0 2px 8px rgba(198, 40, 40, 0.15);
+    }
+    .question-very-high { background-color: #ffebee; border-left-color: #e53935; }
+    .question-high { background-color: #fff3e0; border-left-color: #ff9800; }
+    .question-medium { background-color: #e3f2fd; border-left-color: #2196f3; }
+    .question-number {
+        font-weight: bold; margin-right: 8px; background: #2c3e50; color: white;
+        padding: 2px 8px; border-radius: 4px; display: inline-block;
+        min-width: 25px; text-align: center;
+    }
+    .priority-legend {
+        display: flex; justify-content: center; margin: 20px 0;
+        flex-wrap: wrap; gap: 15px;
+    }
+    .legend-item { display: flex; align-items: center; margin: 0 10px; }
+    .legend-color {
+        width: 20px; height: 20px; border-radius: 4px; margin-right: 8px;
+    }
+    .legend-extreme { background-color: #ffebee; border-left: 4px solid #c62828; }
+    .legend-very-high { background-color: #ffebee; border-left: 4px solid #e53935; }
+    .legend-high { background-color: #fff3e0; border-left: 4px solid #ff9800; }
+    .legend-medium { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { padding: 12px 15px; text-align: left; border: 1px solid #ddd; }
+    th { background-color: #3498db; color: white; font-weight: 600; }
+    .unit-4 { border-left: 5px solid #c62828; }
+    .unit-5 { border-left: 5px solid #e53935; }
+    .unit-3 { border-left: 5px solid #ff9800; }
+    .unit-2 { border-left: 5px solid #2196f3; }
+    .unit-1 { border-left: 5px solid #4caf50; }
+    .unit-header {
+        padding: 15px; color: white; margin-bottom: 20px; border-radius: 5px;
+    }
+    .unit-4 .unit-header { background-color: #c62828; }
+    .unit-5 .unit-header { background-color: #e53935; }
+    .unit-3 .unit-header { background-color: #ff9800; }
+    .unit-2 .unit-header { background-color: #2196f3; }
+    .unit-1 .unit-header { background-color: #4caf50; }
+    .footer {
+        text-align: center; margin-top: 30px; padding-top: 15px;
+        border-top: 1px solid #ddd; font-size: 14px; color: #7f8c8d;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;" oncopy="return false;" onselectstart="return false;">
+  
+  <button class="toggle-btn" onclick="toggleSidebar()">🔥 Hot Topics</button>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Cheat Sheet – CS 304</h2>
+    <strong>Module 1: Intro to OOPS</strong>
+    <ul>
+      <li>Class & Object</li>
+      <li>Encapsulation & Abstraction</li>
+      <li>Data Hiding</li>
+    </ul>
+    <strong>Module 2: Pillars of OOPS</strong>
+    <ul>
+      <li>Inheritance (Types)</li>
+      <li>Polymorphism (Static & Dynamic)</li>
+      <li>Function Overloading & Overriding</li>
+    </ul>
+    <strong>Module 3: Constructors & Memory</strong>
+    <ul>
+      <li>Constructors (Default, Copy, Param.)</li>
+      <li>Destructors</li>
+      <li>`new` & `delete` operators, `this` pointer</li>
+    </ul>
+    <strong>Module 4: Advanced Concepts</strong>
+    <ul>
+      <li>Virtual Functions & Pure Virtual</li>
+      <li>Abstract Base Class</li>
+      <li>Friend Function & Class</li>
+    </ul>
+    <strong>Module 5: Templates & Exceptions</strong>
+    <ul>
+      <li>Function Templates</li>
+      <li>Class Templates</li>
+      <li>Exception Handling (try, catch, throw)</li>
+    </ul>
+  </div>
+
+  <div id="locked-content">
+
+    <h1>CS304 OOPS – Crash Course</h1>
+
+    <div class="iframe-container">
+      <div class="iframe-overlay"></div> 
+      
+      <div class="iframe-blocker-overlay"></div>
+      
+      <iframe src="https://drive.google.com/file/d/1b_oxB9AgQutjMPcdV_Q2_-4t-wdjB7aO/preview" allow="autoplay"></iframe>
+    </div>
+    
+    <div class="page-content">
+      <div class="page">
+        <h1>CS-304 OOPS Prediction Paper</h1>
+        <p>Your new question bank HTML content goes here...</p>
+      </div>
+    </div> </div> <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPH2vLorHnbgXsVBLZz5ZVqeEL49tmeFM",
+      authDomain: "course-app-a1d28.firebaseapp.com",
+      projectId: "course-app-a1d28",
+      storageBucket: "course-app-a1d28.appspot.com",
+      messagingSenderId: "626435621011",
+      appId: "1:626435621011:web:86fe095d0d36de609a4d66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const email = user.email.toLowerCase();
+
+        // Check if the user is in the "SEM3" collection first
+        db.collection("SEM3").doc(email).get().then(doc => {
+          if (doc.exists) {
+            
+            // If they exist in SEM3, unlock the page
+            document.getElementById('locked-content').classList.add('unlocked');
+
+          } else {
+            
+            // If NOT in SEM3, check if they are an admin
+            db.collection("approvedUsers").doc(email).get().then(adminDoc => {
+              if (adminDoc.exists) {
+                
+                // If they are an admin, unlock the page
+                document.getElementById('locked-content').classList.add('unlocked');
+              }
+            });
+            // If they are in neither, the page stays locked.
+          }
+        });
+      }
+      // If the user is not logged in, nothing happens.
+      // The page stays locked.
+    });
+  </script>
+</body>
+</html>
