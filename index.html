@@ -356,20 +356,28 @@
           </ul> 
         </div> 
       </div> 
-<!-- 2nd Semester --> 
-        <div class="semester-block"> 
-          <div class="semester-card" onclick="toggleSubjects('timetable-sem2')">⚙️ 2nd Semester</div> 
-          <div class="subject-list-box"> 
-            <ul id="timetable-sem2" class="subject-list" style="list-style: none; padding-left: 0;"> 
-              <li>📆 18/07/2025 (Fri): BT201 Engineering Physics</li> 
-              <li>📆 23/07/2025 (Wed): BT202 Mathematics – II</li> 
-              <li>📆 28/07/2025 (Mon): BT203 Basic Mechanical Engineering</li> 
-              <li>📆 01/08/2025 (Fri): BT204 Basic Civil Engg. & Engg Mechanics</li> 
-              <li>📆 06/08/2025 (Wed): BT205 Basic Computer Engineering</li> 
-            </ul> <p style="font-size: 14px; color: #f5f5f5; margin-top: 10px;"> 📌 <strong>Note:</strong> Practical Exams: <strong>07/08/2025 to 14/08/2025</strong>. </p> 
-          </div> 
-        </div> 
-      </div> 
+<!-- 3rd Semester --> 
+        <div class="glass-title"> 
+  <h3 class="section-title" style="font-size: 20px;">📅 Dec 2025 End Sem Exam Time Table</h3> 
+</div>
+
+<div class="section">
+  <div class="semester-block"> 
+    <div class="semester-card" onclick="toggleSubjects('timetable-sem3')">💻 3rd Semester (CSE)</div> 
+    <div class="subject-list-box"> 
+      <ul id="timetable-sem3" class="subject-list open" style="list-style: none; padding-left: 0;"> 
+        <li>📆 07/02/2026 (Sat): ES301 Energy & Environment Engineering</li> 
+        <li>📆 13/02/2026 (Fri): CS302 Discrete Structures <span style="font-size: 0.8em; color: #ffeb3b;">(Gap: 5 Days)</span></li> 
+        <li>📆 20/02/2026 (Fri): CS303 Data Structures <span style="font-size: 0.8em; color: #ffeb3b;">(Gap: 6 Days)</span></li> 
+        <li>📆 27/02/2026 (Fri): CS304 Digital Systems <span style="font-size: 0.8em; color: #ffeb3b;">(Gap: 6 Days)</span></li> 
+        <li>📆 07/03/2026 (Sat): CS305 Object Oriented Programming & Methodology <span style="font-size: 0.8em; color: #ffeb3b;">(Gap: 7 Days)</span></li> 
+      </ul> 
+      <p style="font-size: 14px; color: #f5f5f5; margin-top: 10px;"> 
+        📌 <strong>Note:</strong> All exams follow the official RGPV session dates.
+      </p> 
+    </div> 
+  </div> 
+</div> 
       <!-- 📊 Predicted Paper Section --> 
       <div class="glass-title"> 
         <h2 class="section-title">📊 Predicted Paper</h2> 
@@ -469,19 +477,24 @@
   // Ensure all functions are defined before calling them.
   function startCountdown() {
     const countdownEl = document.getElementById("countdown");
-    const targetDate = new Date("2025-07-18T00:00:00").getTime();
+    // Target: First exam on Feb 07, 2026
+    const targetDate = new Date("2026-02-07T10:00:00").getTime(); 
+    
     setInterval(() => {
       const now = new Date().getTime();
       const gap = targetDate - now;
+      
       if (gap <= 0) {
-        countdownEl.innerText = "🎉 Endsem Started!";
+        countdownEl.innerText = "🚀 Exams have started! Good luck!";
         return;
       }
+      
       const days = Math.floor(gap / (1000 * 60 * 60 * 24));
       const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((gap % (1000 * 60)) / 1000);
-      countdownEl.innerText = `⏳ Time Remaining for endsem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      
+      countdownEl.innerText = `⏳ Time Remaining for 3rd Sem Endsem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
     }, 1000);
   }
   function manuallyApprove() {
