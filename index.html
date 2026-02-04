@@ -80,35 +80,99 @@
         }
 
         /* ========================================
-           HEADER
+           HEADER - MODERN DARK DESIGN
         ======================================== */
         header {
-            background-image: url('https://i.pinimg.com/originals/78/78/63/787863a56b90d5f42791890a53b368d7.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
+            position: relative;
+            padding: 3rem 2rem 2rem;
             color: white;
             text-align: center;
-            font-size: 2.8rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px black;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Grid Pattern Background */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        header * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            margin: 0;
+            background: linear-gradient(135deg, #a8b5c8 0%, #7a8ca0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: #8a9bb5;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
         }
 
         /* ========================================
-           COUNTDOWN TIMER
+           COUNTDOWN TIMER - MODERN DESIGN
         ======================================== */
         .countdown {
             text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 10px;
-            animation: flash 1s infinite;
-            color: #e74c3c;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 2rem auto;
+            padding: 1rem 2.5rem;
+            max-width: fit-content;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
+            border: 2px solid #e63946;
+            border-radius: 50px;
+            color: #ffffff;
+            box-shadow: 
+                0 4px 20px rgba(230, 57, 70, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: smooth-pulse 2s ease-in-out infinite;
+            letter-spacing: 0.05em;
+        }
+
+        .countdown::before {
+            content: '⏳ ';
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes smooth-pulse {
+            0%, 100% { 
+                transform: scale(1);
+            }
+            50% { 
+                transform: scale(1.03);
+            }
         }
 
         @keyframes flash {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+            50% { opacity: 0.7; }
         }
 
         /* ========================================
@@ -387,9 +451,16 @@
            RESPONSIVE DESIGN
         ======================================== */
         @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.5rem;
+            }
+
+            .header-subtitle {
+                font-size: 0.9rem;
+            }
+
             header {
-                font-size: 2rem;
-                padding: 0.6rem 0.5rem;
+                padding: 2rem 1rem 1.5rem;
             }
 
             .semester-block {
@@ -397,7 +468,9 @@
             }
 
             .countdown {
-                font-size: 16px;
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+                margin: 1.5rem auto;
             }
 
             .section-title {
@@ -440,16 +513,17 @@
     </div>
 
     <!-- ========================================
-         HEADER
+         HEADER - MODERN DARK DESIGN
     ======================================== -->
     <header>
-        📚 Welcome to Crack Notes
+        <h1 class="header-title">CRACK NOTES</h1>
+        <p class="header-subtitle">Premium Engineering Resource Gateway</p>
     </header>
 
     <!-- ========================================
          COUNTDOWN TIMER
     ======================================== -->
-    <div id="countdown" class="countdown">Time Remaining for Dec 2025 End Sem: ...</div>
+    <div id="countdown" class="countdown">3rd Sem Exams In: 2d 16h 12m 15s</div>
 
     <!-- ========================================
          MAIN CONTENT WRAPPER
@@ -737,7 +811,7 @@
                 const gap = targetDate - now;
 
                 if (gap <= 0) {
-                    countdownEl.innerText = "🎉 Dec 2025 End Sem Started!";
+                    countdownEl.innerText = "Dec 2025 End Sem Started!";
                     return;
                 }
 
@@ -746,7 +820,7 @@
                 const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((gap % (1000 * 60)) / 1000);
 
-                countdownEl.innerText = `⏳ Time Remaining for Dec 2025 End Sem: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+                countdownEl.innerText = `3rd Sem Exams In: ${days}d ${hours}h ${minutes}m ${seconds}s`;
             }, 1000);
         }
 
