@@ -84,7 +84,7 @@
         ======================================== */
         header {
             position: relative;
-            padding: 50px 20px;
+            padding: 30px 20px 50px 20px;
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95)),
                         url('https://i.pinimg.com/originals/78/78/63/787863a56b90d5f42791890a53b368d7.jpg');
             background-size: cover;
@@ -93,6 +93,11 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         /* Grid Pattern Background */
@@ -471,7 +476,7 @@
             }
 
             header {
-                padding: 40px 15px;
+                padding: 25px 15px 40px 15px;
             }
 
             .countdown-wrapper {
@@ -530,8 +535,10 @@
          HEADER - MODERN DARK DESIGN
     ======================================== -->
     <header>
-        <h1 class="header-title">CRACK NOTES</h1>
-        <p class="header-subtitle">The Ultimate Engineering Resource Portal</p>
+        <div class="header-content">
+            <h1 class="header-title">CRACK NOTES</h1>
+            <p class="header-subtitle">The Ultimate Engineering Resource Portal</p>
+        </div>
     </header>
 
     <!-- ========================================
