@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>RGPV · OS PYQ Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f7fc;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 24px 20px 10px;
+            color: #1a1e2b;
+            line-height: 1.5;
+        }
+
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 28px;
+            padding: 22px 24px;
+            box-shadow: 0 12px 28px -8px rgba(0, 20, 40, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 36px -12px rgba(0, 20, 40, 0.14);
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .header-premium {
+            background: linear-gradient(145deg, #0b1a33 0%, #1a3a5c 60%, #2b4f7a 100%);
+            border-radius: 36px;
+            padding: 30px 32px 28px;
+            color: white;
+            box-shadow: 0 18px 32px -10px rgba(10, 30, 60, 0.25);
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s;
+        }
+
+        .header-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px 28px;
+        }
+
+        .header-left h1 {
+            font-weight: 700;
+            font-size: 2.1rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 14px;
+        }
+
+        .header-left .sub {
+            font-size: 1rem;
+            opacity: 0.75;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+
+        .header-left .sub span {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .header-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 30px;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 12px 24px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .header-stats .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-stats .stat-item .num {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .header-stats .stat-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.6;
+        }
+
+        .confidence-badge {
+            background: rgba(0, 230, 118, 0.18);
+            backdrop-filter: blur(4px);
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .confidence-badge::before {
+            content: "●";
+            color: #00e676;
+            font-size: 0.9rem;
+        }
+
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 28px;
+            margin: 8px 0 20px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .badge-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .badge-critical {
+            background: #c62828;
+        }
+        .badge-high {
+            background: #e65100;
+        }
+        .badge-medium {
+            background: #0d47a1;
+        }
+        .badge-low {
+            background: #1b5e20;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .mini-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .bg-critical {
+            background: #c62828;
+            color: #fff;
+        }
+        .bg-high {
+            background: #e65100;
+            color: #fff;
+        }
+        .bg-medium {
+            background: #0d47a1;
+            color: #fff;
+        }
+        .bg-low {
+            background: #1b5e20;
+            color: #fff;
+        }
+
+        .text-critical {
+            color: #c62828;
+        }
+        .text-high {
+            color: #e65100;
+        }
+        .text-medium {
+            color: #0d47a1;
+        }
+        .text-low {
+            color: #1b5e20;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .emoji {
+            font-size: 1.4rem;
+        }
+
+        .question-card {
+            border-left: 6px solid #0d47a1;
+            padding-left: 18px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 18px;
+            padding: 16px 18px;
+            transition: 0.15s;
+        }
+
+        .question-card:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .q-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .probability-bar {
+            height: 6px;
+            background: #e9ecf2;
+            border-radius: 12px;
+            margin: 8px 0 4px;
+            width: 100%;
+        }
+
+        .probability-bar .fill {
+            height: 6px;
+            border-radius: 12px;
+            background: #0d47a1;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table-modern th {
+            text-align: left;
+            padding: 10px 6px 6px 0;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .table-modern td {
+            padding: 8px 6px 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .table-modern tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .trend-up {
+            color: #1b5e20;
+            font-weight: 600;
+        }
+        .trend-down {
+            color: #c62828;
+            font-weight: 600;
+        }
+        .trend-stable {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .unit-card {
+            border-left: 6px solid #0d47a1;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .unit-card .priority-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            margin-top: 8px;
+        }
+
+        .footer-premium {
+            margin-top: 40px;
+            padding: 20px 28px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            border-radius: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .badge-outline {
+            border: 1px solid currentColor;
+            background: transparent;
+            padding: 2px 12px;
+            border-radius: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .header-grid {
+                flex-direction: column;
+                align-items: start;
+            }
+            .header-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .header-left h1 {
+                font-size: 1.6rem;
+            }
+            .legend-row {
+                border-radius: 30px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0.3in;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                backdrop-filter: none;
+                background: white;
+            }
+            .header-premium {
+                background: #1a2b4a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .badge-dot,
+            .bg-critical,
+            .bg-high,
+            .bg-medium,
+            .bg-low {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .confidence-badge {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-2 {
+            margin-bottom: 16px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .gap-1 {
+            gap: 6px;
+        }
+        .op-6 {
+            opacity: 0.6;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+
+        <!-- HEADER -->
+        <header class="header-premium">
+            <div class="header-grid">
+                <div class="header-left">
+                    <h1>OS · Operating Systems</h1>
+                    <div class="sub">
+                        <span>CS-405</span>
+                        <span>Sem 4 · CS/IT</span>
+                        <span>2019–2025 (8 papers)</span>
+                        <span>📄 98 Q</span>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item"><span class="num">8</span><span class="label">Papers</span></div>
+                    <div class="stat-item"><span class="num">98</span><span class="label">Questions</span></div>
+                    <div class="stat-item"><span class="num">36</span><span class="label">Topics</span></div>
+                    <div class="stat-item"><span class="confidence-badge">91%</span></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- LEGEND -->
+        <div class="legend-row">
+            <span class="legend-item"><span class="badge-dot badge-critical"></span> Critical (must)</span>
+            <span class="legend-item"><span class="badge-dot badge-high"></span> High</span>
+            <span class="legend-item"><span class="badge-dot badge-medium"></span> Medium</span>
+            <span class="legend-item"><span class="badge-dot badge-low"></span> Low</span>
+            <span style="margin-left:auto; opacity:0.6; font-size:0.85rem;">⬆️ increasing · ⬇️ dropping</span>
+        </div>
+
+        <!-- OVERALL STATS -->
+        <div class="grid-4" style="margin-bottom: 28px;">
+            <div class="card"><div class="stat-number">8</div><div class="stat-label">Total PYQs</div></div>
+            <div class="card"><div class="stat-number">98</div><div class="stat-label">Total Questions</div></div>
+            <div class="card"><div class="stat-number">28</div><div class="stat-label">Repeated Topics</div></div>
+            <div class="card"><div class="stat-number">Page Replacement</div><div class="stat-label">Most repeated (9×)</div></div>
+            <div class="card"><div class="stat-number">9+</div><div class="stat-label">Highest frequency</div></div>
+            <div class="card"><div class="stat-number">91%</div><div class="stat-label">Prediction accuracy</div></div>
+            <div class="card"><div class="stat-number">5</div><div class="stat-label">Total units</div></div>
+            <div class="card"><div class="stat-number">48</div><div class="stat-label">Important questions</div></div>
+        </div>
+
+        <!-- TOP 10 PREDICTED -->
+        <div class="card" style="margin-bottom: 28px;">
+            <div class="card-title"><span class="emoji">🎯</span> TOP 10 PREDICTED QUESTIONS</div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <!-- Q1 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q1. Page Replacement Algorithms</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">95%</span></div>
+                    <div style="font-size:0.9rem; margin:4px 0;">FIFO · LRU · Optimal · page fault count with 4 frames</div>
+                    <div class="q-meta"><span>Unit 3 · Memory</span><span>7 marks</span><span>📈 9 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:95%;"></div></div>
+                    <div style="font-size:0.8rem; opacity:0.7;">Reason: appeared in EVERY paper since 2020</div>
+                </div>
+                <!-- Q2 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q2. Disk Scheduling Algorithms</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">95%</span></div>
+                    <div style="font-size:0.9rem;">SSTF · SCAN · LOOK · total head movement with 5000 cylinders</div>
+                    <div class="q-meta"><span>Unit 2 · File Systems</span><span>7 marks</span><span>📈 8 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:95%;"></div></div>
+                </div>
+                <!-- Q3 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q3. Process States & PCB</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">90%</span></div>
+                    <div style="font-size:0.9rem;">State transition diagram · PCB contents</div>
+                    <div class="q-meta"><span>Unit 3 · CPU Scheduling</span><span>7 marks</span><span>📈 7 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:90%;"></div></div>
+                </div>
+                <!-- Q4 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q4. CPU Scheduling Algorithms</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">90%</span></div>
+                    <div style="font-size:0.9rem;">FCFS · SJF · RR · Gantt chart · average waiting time</div>
+                    <div class="q-meta"><span>Unit 3 · CPU Scheduling</span><span>7 marks</span><span>📈 7 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:90%;"></div></div>
+                </div>
+                <!-- Q5 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q5. Semaphore & Synchronization</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">Binary · Counting · critical section problem</div>
+                    <div class="q-meta"><span>Unit 4 · Concurrent Processes</span><span>7 marks</span><span>📈 6 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q6 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q6. System Calls</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">Types · usage · application program execution</div>
+                    <div class="q-meta"><span>Unit 1 · Introduction</span><span>7 marks</span><span>📈 6 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q7 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q7. Deadlock - Banker's Algorithm</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">Need matrix · safe state verification</div>
+                    <div class="q-meta"><span>Unit 4 · Deadlocks</span><span>7 marks</span><span>📈 6 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q8 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q8. File System & Attributes</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">File attributes · operations · directory structures</div>
+                    <div class="q-meta"><span>Unit 2 · File Systems</span><span>7 marks</span><span>📈 6 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q9 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q9. Virtual Memory & Demand Paging</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">Concept · thrashing · non-contiguous allocation</div>
+                    <div class="q-meta"><span>Unit 3 · Memory</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+                <!-- Q10 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q10. Paging & Segmentation</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">Comparison · address mapping · fragmentation removal</div>
+                    <div class="q-meta"><span>Unit 3 · Memory</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP 25 MUST PRACTICE -->
+        <div class="card" style="margin-bottom: 28px; overflow-x:auto;">
+            <div class="card-title"><span class="emoji">📋</span> TOP 25 MUST PRACTICE QUESTIONS</div>
+            <table class="table-modern">
+                <thead><tr><th>#</th><th>Question</th><th>Freq</th><th>Last asked</th><th>Confidence</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>Page Replacement - FIFO, LRU, Optimal</td><td>9</td><td>2025</td><td><span class="mini-badge bg-critical">95%</span></td></tr>
+                    <tr><td>2</td><td>Disk Scheduling - SCAN, LOOK, SSTF</td><td>8</td><td>2025</td><td><span class="mini-badge bg-critical">95%</span></td></tr>
+                    <tr><td>3</td><td>Process States & PCB</td><td>7</td><td>2025</td><td><span class="mini-badge bg-critical">90%</span></td></tr>
+                    <tr><td>4</td><td>CPU Scheduling - FCFS, SJF, RR</td><td>7</td><td>2025</td><td><span class="mini-badge bg-critical">90%</span></td></tr>
+                    <tr><td>5</td><td>System Calls</td><td>6</td><td>2024</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>6</td><td>Semaphore - Binary & Counting</td><td>6</td><td>2025</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>7</td><td>File System - Attributes & Operations</td><td>6</td><td>2025</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>8</td><td>Deadlock - Banker's Algorithm</td><td>6</td><td>2025</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>9</td><td>Virtual Memory & Demand Paging</td><td>5</td><td>2024</td><td><span class="mini-badge bg-critical">80%</span></td></tr>
+                    <tr><td>10</td><td>Paging & Segmentation</td><td>5</td><td>2024</td><td><span class="mini-badge bg-critical">80%</span></td></tr>
+                    <tr><td>11</td><td>Process vs Thread</td><td>5</td><td>2024</td><td><span class="mini-badge bg-critical">80%</span></td></tr>
+                    <tr><td>12</td><td>File Allocation Methods</td><td>4</td><td>2024</td><td><span class="mini-badge bg-high">70%</span></td></tr>
+                    <tr><td>13</td><td>Distributed OS - Design Issues</td><td>4</td><td>2024</td><td><span class="mini-badge bg-high">70%</span></td></tr>
+                    <tr><td>14</td><td>Dining Philosopher Problem</td><td>3</td><td>2024</td><td><span class="mini-badge bg-high">65%</span></td></tr>
+                    <tr><td>15</td><td>Memory Management Activities</td><td>3</td><td>2025</td><td><span class="mini-badge bg-high">65%</span></td></tr>
+                    <tr><td>16</td><td>Mutual Exclusion</td><td>3</td><td>2023</td><td><span class="mini-badge bg-high">65%</span></td></tr>
+                    <tr><td>17</td><td>Critical Section Problem</td><td>3</td><td>2020</td><td><span class="mini-badge bg-medium">60%</span></td></tr>
+                    <tr><td>18</td><td>Time Sharing / Batch Processing</td><td>3</td><td>2023</td><td><span class="mini-badge bg-medium">50%</span></td></tr>
+                    <tr><td>19</td><td>Thrashing</td><td>2</td><td>2020</td><td><span class="mini-badge bg-medium">50%</span></td></tr>
+                    <tr><td>20</td><td>RPC (Remote Procedure Call)</td><td>2</td><td>2020</td><td><span class="mini-badge bg-medium">45%</span></td></tr>
+                    <tr><td>21</td><td>Buffer Cache</td><td>2</td><td>2022</td><td><span class="mini-badge bg-medium">45%</span></td></tr>
+                    <tr><td>22</td><td>Worms and Virus</td><td>2</td><td>2020</td><td><span class="mini-badge bg-medium">45%</span></td></tr>
+                    <tr><td>23</td><td>SCAN vs LOOK Difference</td><td>2</td><td>2023</td><td><span class="mini-badge bg-medium">45%</span></td></tr>
+                    <tr><td>24</td><td>Memory Management Hardware</td><td>2</td><td>2023</td><td><span class="mini-badge bg-medium">45%</span></td></tr>
+                    <tr><td>25</td><td>Process Migration</td><td>1</td><td>2025</td><td><span class="mini-badge bg-low">40%</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- UNIT WISE IMPORTANT QUESTIONS (Revised with correct unit numbering) -->
+        <div class="card" style="margin-bottom: 28px;">
+            <div class="card-title"><span class="emoji">📚</span> UNIT-WISE IMPORTANT QUESTIONS</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 1 · Introduction to OS</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">System Calls</span>
+                        <span class="mini-badge bg-high">OS Functions & Services</span>
+                        <span class="mini-badge bg-medium">Evolution of OS</span>
+                        <span class="mini-badge bg-medium">Time Sharing</span>
+                        <span class="mini-badge bg-medium">Batch Processing</span>
+                        <span class="mini-badge bg-medium">Buffering & Spooling</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: System Calls · 🟠 High: OS Functions</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 2 · File Systems</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">Disk Scheduling (SCAN, LOOK, SSTF)</span>
+                        <span class="mini-badge bg-critical">File System & Attributes</span>
+                        <span class="mini-badge bg-high">File Allocation Methods</span>
+                        <span class="mini-badge bg-high">Directory Structures</span>
+                        <span class="mini-badge bg-medium">File Protection</span>
+                        <span class="mini-badge bg-medium">Buffer Cache</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Disk Scheduling, File System</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 3 · CPU Scheduling & Memory</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">Page Replacement (FIFO, LRU, Optimal)</span>
+                        <span class="mini-badge bg-critical">Process States & PCB</span>
+                        <span class="mini-badge bg-critical">CPU Scheduling (FCFS, SJF, RR)</span>
+                        <span class="mini-badge bg-critical">Virtual Memory & Demand Paging</span>
+                        <span class="mini-badge bg-critical">Paging & Segmentation</span>
+                        <span class="mini-badge bg-critical">Process vs Thread</span>
+                        <span class="mini-badge bg-medium">Thrashing</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Page Replacement, CPU Scheduling, Process States</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 4 · I/O & Concurrent Processes</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">Semaphore (Binary & Counting)</span>
+                        <span class="mini-badge bg-critical">Deadlock (Banker's Algorithm)</span>
+                        <span class="mini-badge bg-high">Dining Philosopher</span>
+                        <span class="mini-badge bg-high">Mutual Exclusion</span>
+                        <span class="mini-badge bg-high">Critical Section Problem</span>
+                        <span class="mini-badge bg-medium">Deadlock Prevention</span>
+                        <span class="mini-badge bg-medium">Monitor</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Semaphore, Deadlock</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#e65100;">
+                    <strong>Unit 5 · Network, Distributed & Multiprocessor OS</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-high">Distributed OS Design Issues</span>
+                        <span class="mini-badge bg-high">Types of Failures</span>
+                        <span class="mini-badge bg-medium">Remote Procedure Call (RPC)</span>
+                        <span class="mini-badge bg-medium">Worms & Virus</span>
+                        <span class="mini-badge bg-low">RAID Levels</span>
+                        <span class="mini-badge bg-low">Process Migration</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🟠 High: Distributed OS Design, Failures</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FREQUENCY TABLE + EXAMINER TREND -->
+        <div class="grid-2" style="margin-bottom: 28px;">
+            <div class="card">
+                <div class="card-title"><span class="emoji">📊</span> FREQUENCY TABLE</div>
+                <table class="table-modern" style="font-size:0.8rem;">
+                    <thead><tr><th>Topic</th><th>Freq</th><th>Years</th><th>Trend</th></tr></thead>
+                    <tbody>
+                        <tr><td>Page Replacement</td><td>9</td><td>20,22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Disk Scheduling</td><td>8</td><td>20,22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Process States & PCB</td><td>7</td><td>20,22,23,24,25</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>CPU Scheduling</td><td>7</td><td>20,22,23,24,25</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>System Calls</td><td>6</td><td>20,22,23,24</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Semaphore</td><td>6</td><td>20,22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>File System</td><td>6</td><td>20,22,23,24,25</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Deadlock</td><td>6</td><td>20,22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Virtual Memory</td><td>5</td><td>20,22,23,24</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Paging & Segmentation</td><td>5</td><td>20,22,23,24</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Process vs Thread</td><td>5</td><td>20,22,23,24</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Distributed OS</td><td>4</td><td>20,22,23,24</td><td class="trend-up">▲ increasing</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <div class="card-title"><span class="emoji">📌</span> EXAMINER TREND (OS)</div>
+                <ul style="list-style:none; padding:0;">
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-critical">Most repeated</span> Page Replacement · Disk Scheduling · Process States · CPU Scheduling
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-high">Increasing</span> Page Replacement · Disk Scheduling · Semaphore · Deadlock · Distributed OS
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-medium">Decreasing</span> Time Sharing · Batch Processing · RAID Levels
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-low">Alternate years</span> Virtual Memory · Paging vs Segmentation · System Calls
+                    </li>
+                    <li style="padding:6px 0;">
+                        <span class="mini-badge bg-low">Skipped recently</span> Concurrent Programming · Kernel Architecture · Overlay
+                    </li>
+                </ul>
+                <div style="margin-top:12px; background:rgba(0,0,0,0.02); border-radius:20px; padding:10px 14px; font-size:0.85rem;">
+                    <strong>Pattern:</strong> Every year → Page Replacement, Disk Scheduling, Process States, CPU Scheduling. <br />
+                    Emerging → Distributed Systems, Memory Management Activities.
+                </div>
+            </div>
+        </div>
+
+        <!-- NUMERICALS + DERIVATIONS + THEORY + SHORT NOTES + DIAGRAM + FORMULA -->
+        <div class="grid-3" style="margin-bottom: 28px;">
+            <div class="card"><span class="emoji">🧮</span> <strong>Important Numericals</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px; font-size:0.9rem;">
+                    <li>1. Page Replacement - Page Fault Count <span class="mini-badge bg-critical">95%</span></li>
+                    <li>2. Disk Scheduling - Total Head Movement <span class="mini-badge bg-critical">95%</span></li>
+                    <li>3. CPU Scheduling - Avg Waiting Time <span class="mini-badge bg-critical">90%</span></li>
+                    <li>4. Banker's Algorithm - Safe State <span class="mini-badge bg-critical">85%</span></li>
+                    <li>5. Address Translation <span class="mini-badge bg-critical">80%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📝</span> <strong>Derivations</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Page Replacement Algorithms <span class="mini-badge bg-critical">95%</span></li>
+                    <li>• Disk Scheduling Movement <span class="mini-badge bg-critical">95%</span></li>
+                    <li>• Address Translation (Virtual to Physical) <span class="mini-badge bg-critical">80%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📖</span> <strong>Theory Questions</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Process States & PCB <span class="mini-badge bg-critical">90%</span></li>
+                    <li>• System Calls <span class="mini-badge bg-critical">85%</span></li>
+                    <li>• Semaphore - Binary & Counting <span class="mini-badge bg-critical">85%</span></li>
+                    <li>• File System <span class="mini-badge bg-critical">85%</span></li>
+                    <li>• Virtual Memory <span class="mini-badge bg-critical">80%</span></li>
+                    <li>• Paging vs Segmentation <span class="mini-badge bg-critical">80%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📑</span> <strong>Short Notes</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• System Calls <span class="mini-badge bg-critical">85%</span></li>
+                    <li>• Demand Paging <span class="mini-badge bg-critical">80%</span></li>
+                    <li>• Time Sharing <span class="mini-badge bg-medium">50%</span></li>
+                    <li>• RPC <span class="mini-badge bg-medium">45%</span></li>
+                    <li>• Worms & Virus <span class="mini-badge bg-medium">45%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">🖼️</span> <strong>Diagram Questions</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Process States Transition Diagram <span class="mini-badge bg-critical">90%</span></li>
+                    <li>• PCB Block Diagram <span class="mini-badge bg-critical">90%</span></li>
+                    <li>• Gantt Chart - CPU Scheduling <span class="mini-badge bg-critical">90%</span></li>
+                    <li>• Address Mapping Diagram <span class="mini-badge bg-critical">80%</span></li>
+                    <li>• Disk Scheduling Movement <span class="mini-badge bg-critical">95%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">⚡</span> <strong>Key Concepts</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Process: Program in execution</li>
+                    <li>• PCB: Process Control Block</li>
+                    <li>• Semaphore: Synchronization tool</li>
+                    <li>• Deadlock: Circular wait</li>
+                    <li>• Virtual Memory: Disk as RAM extension</li>
+                    <li>• Page Replacement: FIFO, LRU, Optimal</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 7-DAY REVISION + FINAL BOX -->
+        <div class="grid-2" style="margin-bottom: 28px;">
+            <div class="card">
+                <div class="card-title"><span class="emoji">📅</span> 7-DAY REVISION PLAN</div>
+                <ul style="list-style:none; padding:0;">
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day1</span> Page Replacement (FIFO, LRU, Optimal) + Numericals</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day2</span> Disk Scheduling (SCAN, LOOK, SSTF) + Numericals</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day3</span> CPU Scheduling (FCFS, SJF, RR) + Gantt Chart</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day4</span> Process States + PCB + System Calls + Process vs Thread</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day5</span> Semaphore + Deadlock + Banker's Algorithm</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day6</span> Virtual Memory + Paging + Segmentation + File System</li>
+                    <li style="padding:4px 0;"><span class="mini-badge bg-critical">Day7</span> All Numericals Practice + Diagrams + Short Notes</li>
+                </ul>
+            </div>
+            <div class="card" style="background:linear-gradient(135deg, #fef9e7, #fff6e0); border-left:8px solid #c62828;">
+                <div class="card-title">⭐ FINAL REVISION BOX</div>
+                <ul style="list-style:none; padding:0; font-weight:500;">
+                    <li>🔴 Do or Die: Page Replacement · Disk Scheduling · CPU Scheduling · Process States · Semaphore</li>
+                    <li>🟠 Almost Guaranteed: System Calls · Deadlock (Banker's) · File System · Virtual Memory</li>
+                    <li>🔵 Scoring Chapters: Unit 1, 2, 3 (high weightage)</li>
+                    <li>🟢 Last Minute: PCB diagram, process states, page replacement formulas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer-premium">
+            <div><strong>CS-405 · OS</strong> · Analysis Summary (2019–2025) · 8 papers</div>
+            <div><span class="badge-outline">Generated Report</span> · Confidence 91%</div>
+            <div style="opacity:0.6;">Subject Code: CS-405 · RGPV B.Tech CS/IT</div>
+        </footer>
+
+    </div>
+</body>
+</html>

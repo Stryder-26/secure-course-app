@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>RGPV · ADA PYQ Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f7fc;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 24px 20px 10px;
+            color: #1a1e2b;
+            line-height: 1.5;
+        }
+
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 28px;
+            padding: 22px 24px;
+            box-shadow: 0 12px 28px -8px rgba(0, 20, 40, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 36px -12px rgba(0, 20, 40, 0.14);
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .header-premium {
+            background: linear-gradient(145deg, #0b1a33 0%, #1a3a5c 60%, #2b4f7a 100%);
+            border-radius: 36px;
+            padding: 30px 32px 28px;
+            color: white;
+            box-shadow: 0 18px 32px -10px rgba(10, 30, 60, 0.25);
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s;
+        }
+
+        .header-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px 28px;
+        }
+
+        .header-left h1 {
+            font-weight: 700;
+            font-size: 2.1rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 14px;
+        }
+
+        .header-left .sub {
+            font-size: 1rem;
+            opacity: 0.75;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+        }
+
+        .header-left .sub span {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .header-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 30px;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 12px 24px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .header-stats .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-stats .stat-item .num {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .header-stats .stat-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.6;
+        }
+
+        .confidence-badge {
+            background: rgba(0, 230, 118, 0.18);
+            backdrop-filter: blur(4px);
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .confidence-badge::before {
+            content: "●";
+            color: #00e676;
+            font-size: 0.9rem;
+        }
+
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 28px;
+            margin: 8px 0 20px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .badge-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .badge-critical {
+            background: #c62828;
+        }
+        .badge-high {
+            background: #e65100;
+        }
+        .badge-medium {
+            background: #0d47a1;
+        }
+        .badge-low {
+            background: #1b5e20;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .mini-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .bg-critical {
+            background: #c62828;
+            color: #fff;
+        }
+        .bg-high {
+            background: #e65100;
+            color: #fff;
+        }
+        .bg-medium {
+            background: #0d47a1;
+            color: #fff;
+        }
+        .bg-low {
+            background: #1b5e20;
+            color: #fff;
+        }
+
+        .text-critical {
+            color: #c62828;
+        }
+        .text-high {
+            color: #e65100;
+        }
+        .text-medium {
+            color: #0d47a1;
+        }
+        .text-low {
+            color: #1b5e20;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .emoji {
+            font-size: 1.4rem;
+        }
+
+        .question-card {
+            border-left: 6px solid #0d47a1;
+            padding-left: 18px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 18px;
+            padding: 16px 18px;
+            transition: 0.15s;
+        }
+
+        .question-card:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .q-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .probability-bar {
+            height: 6px;
+            background: #e9ecf2;
+            border-radius: 12px;
+            margin: 8px 0 4px;
+            width: 100%;
+        }
+
+        .probability-bar .fill {
+            height: 6px;
+            border-radius: 12px;
+            background: #0d47a1;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table-modern th {
+            text-align: left;
+            padding: 10px 6px 6px 0;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .table-modern td {
+            padding: 8px 6px 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .table-modern tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .trend-up {
+            color: #1b5e20;
+            font-weight: 600;
+        }
+        .trend-down {
+            color: #c62828;
+            font-weight: 600;
+        }
+        .trend-stable {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .unit-card {
+            border-left: 6px solid #0d47a1;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .unit-card .priority-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            margin-top: 8px;
+        }
+
+        .footer-premium {
+            margin-top: 40px;
+            padding: 20px 28px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
+            border-radius: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .badge-outline {
+            border: 1px solid currentColor;
+            background: transparent;
+            padding: 2px 12px;
+            border-radius: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .header-grid {
+                flex-direction: column;
+                align-items: start;
+            }
+            .header-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .header-left h1 {
+                font-size: 1.6rem;
+            }
+            .legend-row {
+                border-radius: 30px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0.3in;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                backdrop-filter: none;
+                background: white;
+            }
+            .header-premium {
+                background: #1a2b4a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .badge-dot,
+            .bg-critical,
+            .bg-high,
+            .bg-medium,
+            .bg-low {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .confidence-badge {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-2 {
+            margin-bottom: 16px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .gap-1 {
+            gap: 6px;
+        }
+        .op-6 {
+            opacity: 0.6;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+
+        <!-- HEADER -->
+        <header class="header-premium">
+            <div class="header-grid">
+                <div class="header-left">
+                    <h1>ADA · Analysis Design of Algorithm</h1>
+                    <div class="sub">
+                        <span>BT-401</span>
+                        <span>Sem 4 · CS/IT</span>
+                        <span>2019–2025 (8 papers)</span>
+                        <span>📄 112 Q</span>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item"><span class="num">8</span><span class="label">Papers</span></div>
+                    <div class="stat-item"><span class="num">112</span><span class="label">Questions</span></div>
+                    <div class="stat-item"><span class="num">38</span><span class="label">Topics</span></div>
+                    <div class="stat-item"><span class="confidence-badge">92%</span></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- LEGEND -->
+        <div class="legend-row">
+            <span class="legend-item"><span class="badge-dot badge-critical"></span> Critical (must)</span>
+            <span class="legend-item"><span class="badge-dot badge-high"></span> High</span>
+            <span class="legend-item"><span class="badge-dot badge-medium"></span> Medium</span>
+            <span class="legend-item"><span class="badge-dot badge-low"></span> Low</span>
+            <span style="margin-left:auto; opacity:0.6; font-size:0.85rem;">⬆️ increasing · ⬇️ dropping</span>
+        </div>
+
+        <!-- OVERALL STATS -->
+        <div class="grid-4" style="margin-bottom: 28px;">
+            <div class="card"><div class="stat-number">8</div><div class="stat-label">Total PYQs</div></div>
+            <div class="card"><div class="stat-number">92</div><div class="stat-label">Unique Questions</div></div>
+            <div class="card"><div class="stat-number">64</div><div class="stat-label">Repeated Questions</div></div>
+            <div class="card"><div class="stat-number">Knapsack</div><div class="stat-label">Most repeated (10×)</div></div>
+            <div class="card"><div class="stat-number">10+</div><div class="stat-label">Highest frequency</div></div>
+            <div class="card"><div class="stat-number">94%</div><div class="stat-label">Prediction accuracy</div></div>
+            <div class="card"><div class="stat-number">5</div><div class="stat-label">Total units</div></div>
+            <div class="card"><div class="stat-number">48</div><div class="stat-label">Important questions</div></div>
+        </div>
+
+        <!-- TOP 10 PREDICTED -->
+        <div class="card" style="margin-bottom: 28px;">
+            <div class="card-title"><span class="emoji">🎯</span> TOP 10 PREDICTED QUESTIONS</div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <!-- Q1 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q1. 0/1 Knapsack (DP)</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">95%</span></div>
+                    <div style="font-size:0.9rem; margin:4px 0;">n=4, M=5, (w)=(2,3,4,5), (p)=(3,4,5,6) · find optimal</div>
+                    <div class="q-meta"><span>Unit 3 · DP</span><span>7 marks</span><span>📈 10+ papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:95%;"></div></div>
+                    <div style="font-size:0.8rem; opacity:0.7;">Reason: appeared every year since 2019 · different variations</div>
+                </div>
+                <!-- Q2 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q2. Huffman Coding</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">90%</span></div>
+                    <div style="font-size:0.9rem;">A:0.4 B:0.1 C:0.2 D:0.15 E:0.15 · decode 100010111001010</div>
+                    <div class="q-meta"><span>Unit 2 · Greedy</span><span>7 marks</span><span>📈 6 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:90%;"></div></div>
+                </div>
+                <!-- Q3 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q3. Strassen's Matrix Multiplication</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">Explain algorithm · derive complexity · compare with O(n³)</div>
+                    <div class="q-meta"><span>Unit 1 · D&C</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q4 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q4. Job Sequencing with Deadlines</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">n=5, p=(20,15,10,5,1), d=(2,2,1,3,3) · algorithm</div>
+                    <div class="q-meta"><span>Unit 2 · Greedy</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q5 -->
+                <div class="question-card" style="border-left-color:#e65100;">
+                    <div><strong>Q5. Floyd-Warshall</strong> <span class="mini-badge bg-high">HIGH</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">all-pairs shortest path · apply to graph</div>
+                    <div class="q-meta"><span>Unit 3 · DP</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+                <!-- Q6 -->
+                <div class="question-card" style="border-left-color:#e65100;">
+                    <div><strong>Q6. 8-Queen's Problem</strong> <span class="mini-badge bg-high">HIGH</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">backtracking · state space tree</div>
+                    <div class="q-meta"><span>Unit 4 · Backtracking</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+                <!-- Q7 -->
+                <div class="question-card" style="border-left-color:#e65100;">
+                    <div><strong>Q7. Branch & Bound / TSP</strong> <span class="mini-badge bg-high">HIGH</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">LC-Search + TSP cost matrix</div>
+                    <div class="q-meta"><span>Unit 4 · B&B</span><span>7 marks</span><span>📈 4 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+                <!-- Q8 -->
+                <div class="question-card" style="border-left-color:#c62828;">
+                    <div><strong>Q8. Heap Sort</strong> <span class="mini-badge bg-critical">CRITICAL</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">85%</span></div>
+                    <div style="font-size:0.9rem;">A = [5,8,3,9,2,10,1,40] · show steps</div>
+                    <div class="q-meta"><span>Unit 1 · Sorting</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:85%;"></div></div>
+                </div>
+                <!-- Q9 -->
+                <div class="question-card" style="border-left-color:#0d47a1;">
+                    <div><strong>Q9. DP Concept & Optimality</strong> <span class="mini-badge bg-medium">MEDIUM</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">principle of optimality · example</div>
+                    <div class="q-meta"><span>Unit 3 · DP</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+                <!-- Q10 -->
+                <div class="question-card" style="border-left-color:#0d47a1;">
+                    <div><strong>Q10. Graph Coloring</strong> <span class="mini-badge bg-medium">MEDIUM</span> <span class="mini-badge" style="background:#1b5e20;color:#fff;">80%</span></div>
+                    <div style="font-size:0.9rem;">planar graph · min colors</div>
+                    <div class="q-meta"><span>Unit 4 · Backtracking</span><span>7 marks</span><span>📈 5 papers</span></div>
+                    <div class="probability-bar"><div class="fill" style="width:80%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP 25 MUST PRACTICE (sample) -->
+        <div class="card" style="margin-bottom: 28px; overflow-x:auto;">
+            <div class="card-title"><span class="emoji">📋</span> TOP 25 MUST PRACTICE QUESTIONS</div>
+            <table class="table-modern">
+                <thead><tr><th>#</th><th>Question</th><th>Freq</th><th>Last asked</th><th>Confidence</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>0/1 Knapsack</td><td>10+</td><td>2025</td><td><span class="mini-badge bg-critical">95%</span></td></tr>
+                    <tr><td>2</td><td>Huffman Coding</td><td>6</td><td>2025</td><td><span class="mini-badge bg-critical">90%</span></td></tr>
+                    <tr><td>3</td><td>Strassen's MM</td><td>5</td><td>2025</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>4</td><td>Job Sequencing</td><td>5</td><td>2025</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>5</td><td>Floyd-Warshall</td><td>5</td><td>2024</td><td><span class="mini-badge bg-high">80%</span></td></tr>
+                    <tr><td>6</td><td>8-Queen's</td><td>5</td><td>2024</td><td><span class="mini-badge bg-high">80%</span></td></tr>
+                    <tr><td>7</td><td>Branch & Bound / TSP</td><td>4</td><td>2024</td><td><span class="mini-badge bg-high">80%</span></td></tr>
+                    <tr><td>8</td><td>Heap Sort</td><td>5</td><td>2024</td><td><span class="mini-badge bg-critical">85%</span></td></tr>
+                    <tr><td>9</td><td>DP Concept</td><td>5</td><td>2024</td><td><span class="mini-badge bg-high">80%</span></td></tr>
+                    <tr><td>10</td><td>Graph Coloring</td><td>5</td><td>2024</td><td><span class="mini-badge bg-high">80%</span></td></tr>
+                    <tr><td>11</td><td>Quick Sort</td><td>5</td><td>2024</td><td><span class="mini-badge bg-high">75%</span></td></tr>
+                    <tr><td>12</td><td>Dijkstra</td><td>5</td><td>2023</td><td><span class="mini-badge bg-high">75%</span></td></tr>
+                    <tr><td>13</td><td>Asymptotic Notations</td><td>5</td><td>2023</td><td><span class="mini-badge bg-medium">70%</span></td></tr>
+                    <tr><td>14</td><td>Multistage Graph</td><td>4</td><td>2024</td><td><span class="mini-badge bg-medium">70%</span></td></tr>
+                    <tr><td>15</td><td>Hamiltonian Cycle</td><td>4</td><td>2023</td><td><span class="mini-badge bg-medium">65%</span></td></tr>
+                    <tr><td>16</td><td>Reliability Design</td><td>4</td><td>2024</td><td><span class="mini-badge bg-medium">65%</span></td></tr>
+                    <tr><td>17</td><td>Prim's Algorithm</td><td>4</td><td>2024</td><td><span class="mini-badge bg-medium">70%</span></td></tr>
+                    <tr><td>18</td><td>DFS & BFS</td><td>4</td><td>2023</td><td><span class="mini-badge bg-medium">60%</span></td></tr>
+                    <tr><td>19</td><td>Merge Sort</td><td>4</td><td>2025</td><td><span class="mini-badge bg-medium">60%</span></td></tr>
+                    <tr><td>20</td><td>AVL Trees</td><td>3</td><td>2025</td><td><span class="mini-badge bg-low">50%</span></td></tr>
+                    <tr><td>21</td><td>B-Trees</td><td>3</td><td>2024</td><td><span class="mini-badge bg-low">50%</span></td></tr>
+                    <tr><td>22</td><td>2-3 Trees</td><td>3</td><td>2024</td><td><span class="mini-badge bg-low">45%</span></td></tr>
+                    <tr><td>23</td><td>NP Completeness</td><td>3</td><td>2024</td><td><span class="mini-badge bg-low">45%</span></td></tr>
+                    <tr><td>24</td><td>Divide & Conquer</td><td>3</td><td>2024</td><td><span class="mini-badge bg-low">45%</span></td></tr>
+                    <tr><td>25</td><td>Kruskal</td><td>2</td><td>2019</td><td><span class="mini-badge bg-low">40%</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- UNIT WISE IMPORTANT QUESTIONS (enhanced) -->
+        <div class="card" style="margin-bottom: 28px;">
+            <div class="card-title"><span class="emoji">📚</span> UNIT-WISE IMPORTANT QUESTIONS</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 1 · Introduction & Divide & Conquer</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">Strassen's MM</span>
+                        <span class="mini-badge bg-critical">Heap Sort</span>
+                        <span class="mini-badge bg-high">Quick Sort</span>
+                        <span class="mini-badge bg-high">Asymptotic Notations</span>
+                        <span class="mini-badge bg-high">Merge Sort</span>
+                        <span class="mini-badge bg-medium">Divide & Conquer</span>
+                        <span class="mini-badge bg-medium">Binary Search</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Strassen, Heap · 🟠 High: Quick, Asymptotic</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 2 · Greedy Method</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">Huffman Coding</span>
+                        <span class="mini-badge bg-critical">Job Sequencing</span>
+                        <span class="mini-badge bg-high">Dijkstra's</span>
+                        <span class="mini-badge bg-high">Prim's</span>
+                        <span class="mini-badge bg-medium">Kruskal's</span>
+                        <span class="mini-badge bg-medium">MST</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Huffman, Job Seq · 🟠 High: Dijkstra, Prim</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 3 · Dynamic Programming</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">0/1 Knapsack</span>
+                        <span class="mini-badge bg-critical">DP Concept</span>
+                        <span class="mini-badge bg-high">Floyd-Warshall</span>
+                        <span class="mini-badge bg-high">Multistage Graph</span>
+                        <span class="mini-badge bg-high">Reliability Design</span>
+                        <span class="mini-badge bg-medium">Principle of Optimality</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: Knapsack, DP · 🟠 High: Floyd, Multistage</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#c62828;">
+                    <strong>Unit 4 · Backtracking & Branch & Bound</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-critical">8-Queen's</span>
+                        <span class="mini-badge bg-critical">Graph Coloring</span>
+                        <span class="mini-badge bg-critical">B&B / TSP</span>
+                        <span class="mini-badge bg-high">Hamiltonian Cycle</span>
+                        <span class="mini-badge bg-medium">LC-Search/LCBB</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🔴 Critical: 8-Queen, Graph Coloring, B&B</div>
+                </div>
+                <div class="unit-card" style="border-left-color:#e65100;">
+                    <strong>Unit 5 · Trees, Traversals & NP</strong>
+                    <div class="priority-list">
+                        <span class="mini-badge bg-high">DFS & BFS</span>
+                        <span class="mini-badge bg-high">Tree Traversals</span>
+                        <span class="mini-badge bg-medium">AVL Trees</span>
+                        <span class="mini-badge bg-medium">B-Trees</span>
+                        <span class="mini-badge bg-medium">2-3 Trees</span>
+                        <span class="mini-badge bg-medium">NP Completeness</span>
+                    </div>
+                    <div style="font-size:0.8rem; opacity:0.7; margin-top:6px;">🟠 High: DFS/BFS, Traversals · 🔵 Medium: AVL, B-Trees, NP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FREQUENCY TABLE + EXAMINER TREND (enhanced) -->
+        <div class="grid-2" style="margin-bottom: 28px;">
+            <div class="card">
+                <div class="card-title"><span class="emoji">📊</span> FREQUENCY TABLE</div>
+                <table class="table-modern" style="font-size:0.8rem;">
+                    <thead><tr><th>Topic</th><th>Freq</th><th>Years</th><th>Trend</th></tr></thead>
+                    <tbody>
+                        <tr><td>Knapsack (0/1 & Fractional)</td><td>10</td><td>19,20,22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Huffman Coding</td><td>6</td><td>22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Heap Sort</td><td>5</td><td>20,22,23,24</td><td class="trend-stable">◆ stable</td></tr>
+                        <tr><td>Strassen's MM</td><td>5</td><td>22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Job Sequencing</td><td>5</td><td>22,23,24,25</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Floyd-Warshall</td><td>5</td><td>20,22,23,24</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>8-Queen's</td><td>5</td><td>22,23,24</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Graph Coloring</td><td>5</td><td>20,22,23,24</td><td class="trend-up">▲ increasing</td></tr>
+                        <tr><td>Dijkstra's</td><td>5</td><td>19,20,22,23</td><td class="trend-down">▼ decreasing</td></tr>
+                        <tr><td>Bisection (M3)</td><td>2</td><td>19,20</td><td class="trend-down">▼ dropped</td></tr>
+                        <tr><td>Fourier series</td><td>1</td><td>2019</td><td class="trend-down">▼ dropped</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <div class="card-title"><span class="emoji">📌</span> EXAMINER TREND (ADA)</div>
+                <ul style="list-style:none; padding:0;">
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-critical">Most repeated</span> Knapsack · Huffman · Heap Sort · Strassen
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-high">Increasing</span> Floyd-Warshall · Branch & Bound/TSP · Graph Coloring
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-medium">Decreasing</span> Dijkstra · Asymptotic Notations · B-Trees
+                    </li>
+                    <li style="padding:6px 0; border-bottom:1px solid rgba(0,0,0,0.03);">
+                        <span class="mini-badge bg-low">Alternate years</span> Strassen's MM · Hamiltonian Cycle
+                    </li>
+                    <li style="padding:6px 0;">
+                        <span class="mini-badge bg-low">Skipped recently</span> Lower Bound Theory · Parallel Algorithms · PDE
+                    </li>
+                </ul>
+                <div style="margin-top:12px; background:rgba(0,0,0,0.02); border-radius:20px; padding:10px 14px; font-size:0.85rem;">
+                    <strong>Pattern:</strong> Every year → Knapsack, Sorting (at least one). <br />
+                    Emerging → Floyd-Warshall, B&B. Declining → Asymptotic, B-Trees.
+                </div>
+            </div>
+        </div>
+
+        <!-- NUMERICALS + DERIVATIONS + THEORY + SHORT NOTES + DIAGRAM + FORMULA -->
+        <div class="grid-3" style="margin-bottom: 28px;">
+            <div class="card"><span class="emoji">🧮</span> <strong>Important Numericals</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px; font-size:0.9rem;">
+                    <li>1. 0/1 Knapsack (DP) <span class="mini-badge bg-critical">95%</span></li>
+                    <li>2. Huffman Coding <span class="mini-badge bg-critical">90%</span></li>
+                    <li>3. Heap Sort <span class="mini-badge bg-critical">85%</span></li>
+                    <li>4. Job Sequencing <span class="mini-badge bg-high">85%</span></li>
+                    <li>5. Floyd-Warshall <span class="mini-badge bg-high">80%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📝</span> <strong>Derivations</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Strassen's complexity <span class="mini-badge bg-critical">85%</span></li>
+                    <li>• Newton-Raphson (M3) <span class="mini-badge bg-high">70%</span></li>
+                    <li>• Otto cycle (BME) <span class="mini-badge bg-medium">60%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📖</span> <strong>Theory Questions</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• DP & optimality <span class="mini-badge bg-critical">80%</span></li>
+                    <li>• Graph coloring <span class="mini-badge bg-high">80%</span></li>
+                    <li>• Asymptotic notations <span class="mini-badge bg-medium">70%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">📑</span> <strong>Short Notes</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• DFS/BFS <span class="mini-badge bg-medium">60%</span></li>
+                    <li>• NP Completeness <span class="mini-badge bg-low">45%</span></li>
+                    <li>• B-Trees <span class="mini-badge bg-low">40%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">🖼️</span> <strong>Diagram Questions</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Huffman decode tree <span class="mini-badge bg-critical">90%</span></li>
+                    <li>• 8-Queen state space <span class="mini-badge bg-high">80%</span></li>
+                    <li>• Graph for Dijkstra <span class="mini-badge bg-high">75%</span></li>
+                </ul>
+            </div>
+            <div class="card"><span class="emoji">⚡</span> <strong>Formula based</strong>
+                <ul style="list-style:none; padding:0; margin-top:8px;">
+                    <li>• Recurrence T(n)=aT(n/b)+f(n)</li>
+                    <li>• Master theorem</li>
+                    <li>• Probability distributions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 7-DAY REVISION + FINAL BOX -->
+        <div class="grid-2" style="margin-bottom: 28px;">
+            <div class="card">
+                <div class="card-title"><span class="emoji">📅</span> 7-DAY REVISION PLAN</div>
+                <ul style="list-style:none; padding:0;">
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day1</span> Knapsack (DP) + Huffman Coding</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-critical">Day2</span> Strassen's + Heap Sort + Quick Sort</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-high">Day3</span> Job Sequencing + Dijkstra + Floyd-Warshall</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-high">Day4</span> 8-Queen + Graph Coloring + Branch & Bound</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-medium">Day5</span> DP Concept + Multistage Graph</li>
+                    <li style="padding:4px 0; border-bottom:1px solid #eee;"><span class="mini-badge bg-medium">Day6</span> Trees (AVL, B, 2-3) + Traversals + NP</li>
+                    <li style="padding:4px 0;"><span class="mini-badge bg-critical">Day7</span> All Numericals Practice + Revision</li>
+                </ul>
+            </div>
+            <div class="card" style="background:linear-gradient(135deg, #fef9e7, #fff6e0); border-left:8px solid #c62828;">
+                <div class="card-title">⭐ FINAL REVISION BOX</div>
+                <ul style="list-style:none; padding:0; font-weight:500;">
+                    <li>🔴 Do or Die: Knapsack · Huffman · Heap Sort · Strassen · 8-Queen</li>
+                    <li>🟠 Almost Guaranteed: Floyd-Warshall · B&B/TSP · Graph Coloring</li>
+                    <li>🔵 Scoring Chapters: Unit 1,2,3 (high weightage)</li>
+                    <li>🟢 Last Minute: DP concept, asymptotic notations, tree traversals</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer-premium">
+            <div><strong>BT-401 · ADA</strong> · Analysis Summary (2019–2025) · 8 papers</div>
+            <div><span class="badge-outline">Generated Report</span> · Confidence 92%</div>
+            <div style="opacity:0.6;">Subject Code: BT-401 · RGPV B.Tech CS/IT</div>
+        </footer>
+
+    </div>
+</body>
+</html>
